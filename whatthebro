@@ -7,7 +7,7 @@ local window = library:AddWindow("Name GUI", {
 })
 
 local servertab = window:AddTab("Features") -- Name of tab
-features:Show() -- shows the tab
+servertab:Show() -- shows the tab
 
 local playerData = {}
 local currentSelectedPlayer = nil
