@@ -1,22 +1,18 @@
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/memejames/elerium-v2-ui-library//main/Library", true))()
 
 local window = library:AddWindow("Name GUI", {
-	main_color = Color3.fromRGB(41, 74, 122), -- Color
-	min_size = Vector2.new(250, 346), -- Size of the gui
-	can_resize = false, -- true or false
+	main_color = Color3.fromRGB(41, 74, 122),
+	min_size = Vector2.new(250, 346),
+	can_resize = false,
 })
 
-local servertab = window:AddTab("Features") -- Name of tab
-servertab:Show() -- shows the tab
+local servertab = window:AddTab("Features")
+features:Show()
 
 local playerData = {}
 local currentSelectedPlayer = nil
-local currentPlayerConnection = nil
-local currentPlayer = nil
 local notFoundLabel = nil
 local selectedPlayerName = nil
-
-_G.viewPlayer = false
 
 local function abbreviateNumber(value)
     if value >= 1e15 then
@@ -135,49 +131,6 @@ local function removePlayerLabels(playerName)
     end
 end
 
-local function viewPlayer(playerName)
-    local player = nil
-    for _, p in ipairs(game.Players:GetPlayers()) do
-        if p.Name:lower():match(playerName:lower()) then
-            player = p
-            break
-        end
-    end
-
-    if player then
-        local function setCameraToCharacter(character)
-            game.Workspace.CurrentCamera.CameraSubject = character
-        end
-
-        setCameraToCharacter(player.Character or player.CharacterAdded:Wait())
-
-        if currentPlayerConnection then
-            currentPlayerConnection:Disconnect()
-            currentPlayerConnection = nil
-        end
-
-        currentPlayerConnection = player.CharacterAdded:Connect(setCameraToCharacter)
-        currentPlayer = player
-    end
-end
-
-local function viewPlayerEnabled()
-    if selectedPlayerName then
-        viewPlayer(selectedPlayerName)
-    end
-end
-
-local function viewPlayerDisabled()
-    if currentPlayerConnection then
-        currentPlayerConnection:Disconnect()
-        currentPlayerConnection = nil
-    end
-
-    local localPlayer = game.Players.LocalPlayer
-    game.Workspace.CurrentCamera.CameraSubject = localPlayer.Character or localPlayer.CharacterAdded:Wait()
-    currentPlayer = nil
-end
-
 local textbox = servertab:AddTextBox("Player Name", function(playerName)
     selectedPlayerName = playerName
     if notFoundLabel then
@@ -207,10 +160,13 @@ servertab:AddButton("Reveal Stats", function()
     end
 end)
 
-servertab:AddSwitch("View Player", function(bool)
-    if bool then
-        viewPlayerEnabled()
-    else
-        viewPlayerDisabled()
+game.Players.PlayerRemoving:Connect(function(player)
+    local playerName = player.Name
+    if playerData[playerName] then
+        removePlayerLabels(playerName)
+    end
+    if playerName == selectedPlayerName then
+        currentSelectedPlayer = nil
+        selectedPlayerName = nil
     end
 end)
