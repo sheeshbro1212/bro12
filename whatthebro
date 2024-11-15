@@ -2029,58 +2029,194 @@ local window = library:AddWindow("Beamed V2 (Free Version)", {
 	can_resize = true, -- true or false
 })
 
-local features = window:AddTab("Main") -- main tab
+local features = servertab:AddTab("Main") -- main tab
 features:Show()
 
-local function autoPunchWithMovement()
-    while _G.autopunchwm do
-        local args = {
-            [1] = "punch",
-            [2] = "rightHand"
-        }
-        game:GetService("Players").LocalPlayer.muscleEvent:FireServer(unpack(args))
+local playerData = {}
+local currentSelectedPlayer = nil
+local currentPlayerConnection = nil
+local currentPlayer = nil
+local notFoundLabel = nil
+local selectedPlayerName = nil
 
-        local args = {
-            [1] = "punch",
-            [2] = "leftHand"
-        }
-        game:GetService("Players").LocalPlayer.muscleEvent:FireServer(unpack(args))
+_G.viewPlayer = false
 
-        game:GetService("RunService").RenderStepped:Wait()
+local function abbreviateNumber(value)
+    if value >= 1e15 then
+        return string.format("%.1fQa", value / 1e15)
+    elseif value >= 1e12 then
+        return string.format("%.1fT", value / 1e12)
+    elseif value >= 1e9 then
+        return string.format("%.1fB", value / 1e9)
+    elseif value >= 1e6 then
+        return string.format("%.1fM", value / 1e6)
+    elseif value >= 1e3 then
+        return string.format("%.1fK", value / 1e3)
+    else
+        return tostring(value)
     end
 end
 
-local function playAnimations()
-    local character = game.Players.LocalPlayer.Character
-    local humanoid = character:WaitForChild("Humanoid")
+local function createPlayerLabels(player)
+    local playerName = player.Name
+    local leaderstats = player:FindFirstChild("leaderstats")
+    local equippedPets = player:FindFirstChild("equippedPets")
+    local ownedGamepasses = player:FindFirstChild("ownedGamepasses")
 
-    local animationIds = {
-        "rbxassetid://3638767427",
-        "rbxassetid://3638749874"
+    local labels = {
+        StrengthLabel = servertab:AddLabel("Strength: " .. abbreviateNumber(leaderstats.Strength.Value or 0)),
+        DurabilityLabel = servertab:AddLabel("Durability: " .. abbreviateNumber(player.Durability.Value or 0)),
+        KillsLabel = servertab:AddLabel("Kills: " .. abbreviateNumber(leaderstats.Kills.Value or 0)),
+        BrawlsLabel = servertab:AddLabel("Brawls: " .. abbreviateNumber(leaderstats.Brawls.Value or 0)),
+        AgilityLabel = servertab:AddLabel("Agility: " .. abbreviateNumber(player.Agility.Value or 0)),
+        EvilKarmaLabel = servertab:AddLabel("evilKarma: " .. abbreviateNumber(player.evilKarma.Value or 0)),
+        GoodKarmaLabel = servertab:AddLabel("goodKarma: " .. abbreviateNumber(player.goodKarma.Value or 0)),
+        MapLabel = servertab:AddLabel("Map: " .. (player.currentMap.Value or "N/A")),
+        KingTimeLabel = servertab:AddLabel("KingTime: " .. abbreviateNumber(player.muscleKingTime.Value or 0)),
+        PremiumLabel = servertab:AddLabel("Premium: " .. (player.MembershipType == Enum.MembershipType.Premium and "true" or "false")),
     }
 
-    local currentIndex = 1
+    for i = 1, 5 do
+        local petValue = equippedPets:FindFirstChild("pet" .. i) and equippedPets["pet" .. i].Value or "N/A"
+        labels["Pet" .. i .. "Label"] = servertab:AddLabel("Pet" .. i .. ": " .. tostring(petValue))
+    end
 
-    while _G.autopunchwm do
-        local animation = Instance.new("Animation")
-        animation.AnimationId = animationIds[currentIndex]
+    local gamepassList = {}
+    if ownedGamepasses then
+        for _, gamepass in ipairs(ownedGamepasses:GetChildren()) do
+            table.insert(gamepassList, gamepass.Name)
+        end
+    end
 
-        local animationTrack = humanoid:LoadAnimation(animation)
-        animationTrack:Play()
+    local gamepassesText = #gamepassList > 0 and table.concat(gamepassList, ", ") or "N/A"
+    labels.GamepassesLabel = servertab:AddLabel("ownedGamepasses: " .. gamepassesText)
 
-        currentIndex = currentIndex % #animationIds + 1
+    playerData[playerName] = labels
 
-        wait(0.4)
+    leaderstats.Kills.Changed:Connect(function()
+        labels.KillsLabel.Text = "Kills: " .. abbreviateNumber(leaderstats.Kills.Value or 0)
+    end)
+
+    leaderstats.Strength.Changed:Connect(function()
+        labels.StrengthLabel.Text = "Strength: " .. abbreviateNumber(leaderstats.Strength.Value or 0)
+    end)
+
+    leaderstats.Brawls.Changed:Connect(function()
+        labels.BrawlsLabel.Text = "Brawls: " .. abbreviateNumber(leaderstats.Brawls.Value or 0)
+    end)
+
+    player.Durability.Changed:Connect(function()
+        labels.DurabilityLabel.Text = "Durability: " .. abbreviateNumber(player.Durability.Value or 0)
+    end)
+
+    player.Agility.Changed:Connect(function()
+        labels.AgilityLabel.Text = "Agility: " .. abbreviateNumber(player.Agility.Value or 0)
+    end)
+
+    player.evilKarma.Changed:Connect(function()
+        labels.EvilKarmaLabel.Text = "evilKarma: " .. abbreviateNumber(player.evilKarma.Value or 0)
+    end)
+
+    player.goodKarma.Changed:Connect(function()
+        labels.GoodKarmaLabel.Text = "goodKarma: " .. abbreviateNumber(player.goodKarma.Value or 0)
+    end)
+
+    player.currentMap.Changed:Connect(function()
+        labels.MapLabel.Text = "Map: " .. (player.currentMap.Value or "N/A")
+    end)
+
+    player.muscleKingTime.Changed:Connect(function()
+        labels.KingTimeLabel.Text = "KingTime: " .. abbreviateNumber(player.muscleKingTime.Value or 0)
+    end)
+end
+
+local function removePlayerLabels(playerName)
+    local labels = playerData[playerName]
+    if labels then
+        for _, label in pairs(labels) do
+            label:Remove()
+        end
+        playerData[playerName] = nil
     end
 end
 
-local switch = features:AddSwitch("Auto Punch {With Movement}", function(bool)
-    if bool then
-        _G.autopunchwm = true
-        spawn(autoPunchWithMovement)
-        spawn(playAnimations)
+local function viewPlayer(playerName)
+    local player = nil
+    for _, p in ipairs(game.Players:GetPlayers()) do
+        if p.Name:lower():match(playerName:lower()) then
+            player = p
+            break
+        end
+    end
+
+    if player then
+        local function setCameraToCharacter(character)
+            game.Workspace.CurrentCamera.CameraSubject = character
+        end
+
+        setCameraToCharacter(player.Character or player.CharacterAdded:Wait())
+
+        if currentPlayerConnection then
+            currentPlayerConnection:Disconnect()
+            currentPlayerConnection = nil
+        end
+
+        currentPlayerConnection = player.CharacterAdded:Connect(setCameraToCharacter)
+        currentPlayer = player
+    end
+end
+
+local function viewPlayerEnabled()
+    if selectedPlayerName then
+        viewPlayer(selectedPlayerName)
+    end
+end
+
+local function viewPlayerDisabled()
+    if currentPlayerConnection then
+        currentPlayerConnection:Disconnect()
+        currentPlayerConnection = nil
+    end
+
+    local localPlayer = game.Players.LocalPlayer
+    game.Workspace.CurrentCamera.CameraSubject = localPlayer.Character or localPlayer.CharacterAdded:Wait()
+    currentPlayer = nil
+end
+
+local textbox = servertab:AddTextBox("Player Name", function(playerName)
+    selectedPlayerName = playerName
+    if notFoundLabel then
+        notFoundLabel:Remove()
+        notFoundLabel = nil
+    end
+
+    local player = game.Players:FindFirstChild(playerName)
+    if not player then
+        notFoundLabel = servertab:AddLabel("Player not found!")
+        selectedPlayerName = nil
+    end
+end)
+
+servertab:AddButton("Reveal Stats", function()
+    local player = game.Players:FindFirstChild(selectedPlayerName)
+    if player then
+        if currentSelectedPlayer then
+            removePlayerLabels(currentSelectedPlayer)
+        end
+        createPlayerLabels(player)
+        currentSelectedPlayer = selectedPlayerName
     else
-        _G.autopunchwm = false
+        if notFoundLabel == nil then
+            notFoundLabel = servertab:AddLabel("Player not found!")
+        end
+    end
+end)
+
+servertab:AddSwitch("View Player", function(bool)
+    if bool then
+        viewPlayerEnabled()
+    else
+        viewPlayerDisabled()
     end
 end)
 
