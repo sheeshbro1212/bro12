@@ -6,8 +6,8 @@ local window = library:AddWindow("Name GUI", {
 	can_resize = false, -- true or false
 })
 
-local features = window:AddTab("Look Plr") -- Name of tab
-local servertab = features -- Set 'servertab' for consistency with your references
+local servertab = window:AddTab("Features") -- Name of tab
+features:Show() -- shows the tab
 
 local playerData = {}
 local currentSelectedPlayer = nil
