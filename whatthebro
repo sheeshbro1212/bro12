@@ -6,174 +6,83 @@ local Window = Fluent:CreateWindow({
     Title = "Beamed v2 " .. Fluent.Version,
     SubTitle = "by ben1x1x1x1x/ben",
     TabWidth = 125,
-    Size = UDim2.fromScale(0.9, 1), -- Scales the window to 90% width and 80% height of the screen
-    Position = UDim2.fromScale(0.05, 0.1), -- Centers the window on the screen with some padding
-    Acrylic = true, -- Blur effect (set to false to disable blur)
+    Size = UDim2.fromScale(0.9, 0.8),
+    Position = UDim2.fromScale(0.05, 0.1),
+    Acrylic = true,
     Theme = "Dark",
-    MinimizeKey = Enum.KeyCode.LeftControl -- Used when there's no MinimizeKeybind
+    MinimizeKey = Enum.KeyCode.LeftControl
 })
 
+-- GUI for Key Input
+local KeyInputWindow = Fluent:CreateWindow({
+    Title = "Enter Key",
+    SubTitle = "Beamed v2 Key System",
+    Size = UDim2.fromScale(0.5, 0.3),
+    Position = UDim2.fromScale(0.25, 0.35),
+    Theme = "Dark",
+    MinimizeKey = Enum.KeyCode.LeftControl
+})
 
---Fluent provides Lucide Icons https://lucide.dev/icons/ for the tabs, icons are optional
-local Tabs = {
-    Main = Window:AddTab({ Title = "Main", Icon = "" }),
-    Settings = Window:AddTab({ Title = "Settings", Icon = "settings" })
-}
+-- Textbox for the key
+local KeyTextbox = KeyInputWindow:AddTextbox({
+    Title = "Enter Key",
+    Text = "",
+    PlaceholderText = "Enter key here",
+    ClearTextOnFocus = true,
+    Callback = function(key)
+        if key == "Beamed" then
+            KeyInputWindow:Destroy() -- Close the key window
+            LoadScript() -- Load the main script
+        else
+            Fluent:Notify({
+                Title = "Invalid Key",
+                Content = "The key you entered is incorrect!",
+                Duration = 5
+            })
+        end
+    end
+})
 
-local Options = Fluent.Options
+-- Function to load the script after key is verified
+function LoadScript()
+    local Tabs = {
+        Main = Window:AddTab({ Title = "Main", Icon = "" }),
+        Settings = Window:AddTab({ Title = "Settings", Icon = "settings" })
+    }
 
-do
+    local Options = Fluent.Options
+
     Fluent:Notify({
         Title = "Notification",
         Content = "Beamed v2 Loaded!",
-        SubContent = "SubContent", -- Optional
-        Duration = 5 -- Set to nil to make the notification not disappear
+        SubContent = "SubContent",
+        Duration = 5
     })
 
-
-
-
-
-
--- AutoFarm weights (equip any farming tools)
-Tabs.Main:AddButton({
-    Title = "AutoFarm weights (equip any farming tools)",
-    Description = "Activates auto farming with the equipped tools.",
-    Callback = function()
-        while true do
-            local args = {
-                [1] = "rep"
-            }
-
-            game:GetService("Players").LocalPlayer.muscleEvent:FireServer(unpack(args))
-            game:GetService("RunService").RenderStepped:Wait()
-        end
-    end
-})
-
--- Fast weight (client side) (Unequip Weight first!)
-Tabs.Main:AddButton({
-    Title = "Fast weight (client side)(Unequip Weight first!)",
-    Description = "Sets weight value to zero for faster weight gain.",
-    Callback = function()
-        game:GetService("Players").LocalPlayer.Backpack.Weight:FindFirstChildOfClass("NumberValue").Value = 0
-    end
-})
-
--- Claim all chest
-Tabs.Main:AddButton({
-    Title = "Claim all chests",
-    Description = "Teleports to chest locations to claim them.",
-    Callback = function()
-        local Players = game:GetService("Players")
-        local player = Players.LocalPlayer
-
-        local teleportPositions = {
-            Vector3.new(41.00082015991211, 7.25372314453125, 413.7836608886719),
-            Vector3.new(-2569.714111328125, 7.253732681274414, -552.041259765625),
-            Vector3.new(2202.354248046875, 7.253730773925781, 905.2389526367188),
-            Vector3.new(-6710.41064453125, 7.253731727600098, -1458.2186279296875),
-            Vector3.new(4663.82177734375, 1000.9722290039062, -3698.064208984375)
-        }
-
-        local function teleportToPositions()
-            local originalPosition = player.Character.HumanoidRootPart.Position
-
-            for _, position in ipairs(teleportPositions) do
-                player.Character.HumanoidRootPart.CFrame = CFrame.new(position)
-                wait(1) -- Wait for 1 second at each position
+    -- AutoFarm weights
+    Tabs.Main:AddButton({
+        Title = "AutoFarm weights (equip any farming tools)",
+        Description = "Activates auto farming with the equipped tools.",
+        Callback = function()
+            while true do
+                local args = { [1] = "rep" }
+                game:GetService("Players").LocalPlayer.muscleEvent:FireServer(unpack(args))
+                game:GetService("RunService").RenderStepped:Wait()
             end
-
-            player.Character.HumanoidRootPart.CFrame = CFrame.new(originalPosition)
         end
+    })
 
-        teleportToPositions()
-    end
-})
-
-
-Tabs.Main:AddParagraph({
-    Title = "Script Hub",
-    Content = "Scripting Hub.\nFor other scripts!"
-})
-
- -- Permanent Shiftlock
-Tabs.Main:AddButton({
-    Title = "Permanent Shiftlock",
-    Description = "Enables permanent shiftlock mode.",
-    Callback = function()
-        loadstring(game:HttpGet('https://pastebin.com/raw/CjNsnSDy'))()
-    end
-})
-
-Tabs.Main:AddParagraph({
-    Title = "Misc",
-    Content = "other stuffs.\nMisc!"
-})
-
--- Morning
-Tabs.Main:AddButton({
-    Title = "Morning",
-    Description = "Sets the time to morning (7 AM).",
-    Callback = function()
-        game.Lighting.ClockTime = 7
-    end
-})
-
--- Daytime
-Tabs.Main:AddButton({
-    Title = "Daytime",
-    Description = "Sets the time to daytime (8 AM).",
-    Callback = function()
-        game.Lighting.ClockTime = 8
-    end
-})
-
--- Night
-Tabs.Main:AddButton({
-    Title = "Night",
-    Description = "Sets the time to night (5 PM).",
-    Callback = function()
-        game.Lighting.ClockTime = 5
-    end
-})
-   
- 
-
--- Addons:
--- SaveManager (Allows you to have a configuration system)
--- InterfaceManager (Allows you to have a interface managment system)
-
--- Hand the library over to our managers
-SaveManager:SetLibrary(Fluent)
-InterfaceManager:SetLibrary(Fluent)
-
--- Ignore keys that are used by ThemeManager.
--- (we dont want configs to save themes, do we?)
-SaveManager:IgnoreThemeSettings()
-
--- You can add indexes of elements the save manager should ignore
-SaveManager:SetIgnoreIndexes({})
-
--- use case for doing it this way:
--- a script hub could have themes in a global folder
--- and game configs in a separate folder per game
-InterfaceManager:SetFolder("FluentScriptHub")
-SaveManager:SetFolder("FluentScriptHub/specific-game")
-
-InterfaceManager:BuildInterfaceSection(Tabs.Settings)
-SaveManager:BuildConfigSection(Tabs.Settings)
-
+    -- Additional features...
+    -- Add other buttons, settings, etc. as needed
+end
 
 Window:SelectTab(1)
 
+-- Display key input window initially
+KeyInputWindow:Show()
+
 Fluent:Notify({
-    Title = "Beamd v2",
-    Content = "The script has been loaded.",
+    Title = "Beamed v2",
+    Content = "Please enter the key to continue.",
     Duration = 8
 })
-
--- You can use the SaveManager:LoadAutoloadConfig() to load a config
--- which has been marked to be one that auto loads!
-SaveManager:LoadAutoloadConfig()
-end
