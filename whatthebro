@@ -190,25 +190,114 @@ end)
 -- You can add additional Fluent UI elements here, such as tabs, buttons, and more.
 
 
-local Toggle = Tabs.Main:AddToggle("MyToggle", {Title = "Auto Join Brawl (God mode)", Default = false})
+local Toggle = Tabs.Main:AddToggle("AutoBrawlGodMode", {
+    Title = "Auto Join Brawl (God Mode)",
+    Default = false
+})
 
 Toggle:OnChanged(function()
-    print("Auto Join Brawl (God mode) Toggle changed:", Toggle.Value)  -- Use Toggle here, not Options.MyToggle
-    if Toggle.Value then  -- Same here, use Toggle instead of Options.MyToggle
+    if Toggle.Value then
         _G.autobrawl = true
         repeat
+            -- Trigger the brawl join event
             local args = {
                 [1] = "joinBrawl"
             }
 
+            -- Fire the brawl event
             game:GetService("ReplicatedStorage").rEvents.brawlEvent:FireServer(unpack(args))
-            game:GetService("RunService").RenderStepped:Wait()
+            game:GetService("RunService").RenderStepped:Wait()  -- Ensures it keeps joining
         until not _G.autobrawl
     else
         _G.autobrawl = false
     end
 end)
 
-Toggle:SetValue(false)  -- No need to use Options.MyToggle, use Toggle directly
+-- Optionally set the initial value if you want
+Toggle:SetValue(false)
 
+
+Tabs.Teleport:AddButton({
+    Title = "Muscle king",
+    Description = "",
+    Callback = function()
+        local player = game.Players.LocalPlayer
+        local character = player.Character
+        local targetPosition = Vector3.new(-13, 5, 134)
+    
+        if character then
+            character.HumanoidRootPart.CFrame = CFrame.new(targetPosition)
+        end
+    end
+})
+
+Tabs.Teleport:AddButton({
+    Title = "Legends",
+    Description = "",
+    Callback = function()
+        local player = game.Players.LocalPlayer
+        local character = player.Character
+        local targetPosition = Vector3.new(4609, 989, -3903)
+    
+        if character then
+            character.HumanoidRootPart.CFrame = CFrame.new(targetPosition)
+        end
+    end
+})
+
+Tabs.Teleport:AddButton({
+    Title = "Mythical TP",
+    Description = "",
+    Callback = function()
+        local player = game.Players.LocalPlayer
+        local character = player.Character
+        local targetPosition = Vector3.new(2250, 5.2, 1073)
+    
+        if character then
+            character.HumanoidRootPart.CFrame = CFrame.new(targetPosition)
+        end
+    end
+})
+
+Tabs.Teleport:AddButton({
+    Title = "Frost TP",
+    Description = "",
+    Callback = function()
+        local player = game.Players.LocalPlayer
+        local character = player.Character
+        local targetPosition = Vector3.new(-2623, 5, -409)
+    
+        if character then
+            character.HumanoidRootPart.CFrame = CFrame.new(targetPosition)
+        end
+    end
+})
+
+Tabs.Teleport:AddButton({
+    Title = "Inferno TP",
+    Description = "",
+    Callback = function()
+        local player = game.Players.LocalPlayer
+        local character = player.Character
+        local targetPosition = Vector3.new(-6758, 5, -1284)
+    
+        if character then
+            character.HumanoidRootPart.CFrame = CFrame.new(targetPosition)
+        end
+    end
+})
+
+Tabs.Teleport:AddButton({
+    Title = "Beach TP",
+    Description = "",
+    Callback = function()
+        local player = game.Players.LocalPlayer
+        local character = player.Character
+        local targetPosition = Vector3.new(-13, 5, 134)
+    
+        if character then
+            character.HumanoidRootPart.CFrame = CFrame.new(targetPosition)
+        end
+    end
+})
 
