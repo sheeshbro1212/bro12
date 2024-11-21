@@ -1,37 +1,3 @@
-local function LoadWhitelistedUsernames()
-    local url = "https://pastebin.com/raw/K4zSZXdU" -- Ihre Whitelist-URL hier einfügen
-    local success, response = pcall(game.HttpGet, game, url)
-    if success then
-        if response then
-            local success, usernames = pcall(function() return loadstring(response)() end)
-            if success and type(usernames) == "table" then
-                return usernames
-            else
-                warn("Fehler beim Laden der Whitelist: Die Antwort konnte nicht interpretiert werden.")
-            end
-        else
-            warn("Fehler beim Laden der Whitelist: Die Antwort ist leer.")
-        end
-    else
-        warn("Fehler beim Laden der Whitelist: Die Anfrage konnte nicht abgeschlossen werden.")
-    end
-    return {} -- Rückgabe einer leeren Liste, falls ein Fehler auftritt
-end
-
-local function IsUsernameWhitelisted(username, whitelist)
-    for _, whitelisted in ipairs(whitelist) do
-        if username == whitelisted then
-            return true
-        end
-    end
-    return false
-end
-
-local WhitelistedUsernames = LoadWhitelistedUsernames()
-local player = game.Players.LocalPlayer
-local username = player.Name
-
-if IsUsernameWhitelisted(username, WhitelistedUsernames) then
 local ui_options = {
 	main_color = Color3.fromRGB(105, 105, 105),
 	min_size = Vector2.new(550, 450),
