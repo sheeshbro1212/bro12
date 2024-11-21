@@ -2,87 +2,189 @@ local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/
 local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/SaveManager.lua"))()
 local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"))()
 
-local Window = Fluent:CreateWindow({
-    Title = "Beamed v2 " .. Fluent.Version,
-    SubTitle = "by ben1x1x1x1x/ben",
-    TabWidth = 125,
-    Size = UDim2.fromScale(0.9, 0.8),
-    Position = UDim2.fromScale(0.05, 0.1),
-    Acrylic = true,
-    Theme = "Dark",
-    MinimizeKey = Enum.KeyCode.LeftControl
-})
+local key = "Beamed"  -- Correct key to unlock the script
 
--- GUI for Key Input
-local KeyInputWindow = Fluent:CreateWindow({
-    Title = "Enter Key",
-    SubTitle = "Beamed v2 Key System",
-    Size = UDim2.fromScale(0.5, 0.3),
-    Position = UDim2.fromScale(0.25, 0.35),
-    Theme = "Dark",
-    MinimizeKey = Enum.KeyCode.LeftControl
-})
+-- Create the key input GUI
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+ScreenGui.Name = "KeySystemGui"
 
--- Textbox for the key
-local KeyTextbox = KeyInputWindow:AddTextbox({
-    Title = "Enter Key",
-    Text = "",
-    PlaceholderText = "Enter key here",
-    ClearTextOnFocus = true,
-    Callback = function(key)
-        if key == "Beamed" then
-            KeyInputWindow:Destroy() -- Close the key window
-            LoadScript() -- Load the main script
-        else
-            Fluent:Notify({
-                Title = "Invalid Key",
-                Content = "The key you entered is incorrect!",
-                Duration = 5
-            })
-        end
-    end
-})
+local KeyFrame = Instance.new("Frame")
+KeyFrame.Parent = ScreenGui
+KeyFrame.Size = UDim2.new(0.4, 0, 0.3, 0)
+KeyFrame.Position = UDim2.new(0.3, 0, 0.35, 0)
+KeyFrame.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+KeyFrame.BorderSizePixel = 3
+KeyFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
 
--- Function to load the script after key is verified
-function LoadScript()
-    local Tabs = {
-        Main = Window:AddTab({ Title = "Main", Icon = "" }),
-        Settings = Window:AddTab({ Title = "Settings", Icon = "settings" })
-    }
+local TitleLabel = Instance.new("TextLabel")
+TitleLabel.Parent = KeyFrame
+TitleLabel.Size = UDim2.new(1, 0, 0.2, 0)
+TitleLabel.Position = UDim2.new(0, 0, 0, 0)
+TitleLabel.Text = "Enter Key"
+TitleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+TitleLabel.TextScaled = true
+TitleLabel.BackgroundTransparency = 1
 
-    local Options = Fluent.Options
+local KeyInput = Instance.new("TextBox")
+KeyInput.Parent = KeyFrame
+KeyInput.Size = UDim2.new(0.8, 0, 0.2, 0)
+KeyInput.Position = UDim2.new(0.1, 0, 0.4, 0)
+KeyInput.PlaceholderText = "Enter Key"
+KeyInput.TextColor3 = Color3.fromRGB(255, 255, 255)
+KeyInput.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+KeyInput.BorderSizePixel = 2
+KeyInput.BorderColor3 = Color3.fromRGB(0, 0, 0)
+KeyInput.TextScaled = true
 
-    Fluent:Notify({
-        Title = "Notification",
-        Content = "Beamed v2 Loaded!",
-        SubContent = "SubContent",
-        Duration = 5
-    })
+local SubmitButton = Instance.new("TextButton")
+SubmitButton.Parent = KeyFrame
+SubmitButton.Size = UDim2.new(0.8, 0, 0.2, 0)
+SubmitButton.Position = UDim2.new(0.1, 0, 0.7, 0)
+SubmitButton.Text = "Submit"
+SubmitButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+SubmitButton.BackgroundColor3 = Color3.fromRGB(0, 150, 0)
+SubmitButton.BorderSizePixel = 2
+SubmitButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
+SubmitButton.TextScaled = true
 
-    -- AutoFarm weights
-    Tabs.Main:AddButton({
-        Title = "AutoFarm weights (equip any farming tools)",
-        Description = "Activates auto farming with the equipped tools.",
-        Callback = function()
-            while true do
-                local args = { [1] = "rep" }
-                game:GetService("Players").LocalPlayer.muscleEvent:FireServer(unpack(args))
-                game:GetService("RunService").RenderStepped:Wait()
-            end
-        end
-    })
-
-    -- Additional features...
-    -- Add other buttons, settings, etc. as needed
-end
-
-Window:SelectTab(1)
-
--- Display key input window initially
-KeyInputWindow:Show()
+local InvalidKeyLabel = Instance.new("TextLabel")
+InvalidKeyLabel.Parent = KeyFrame
+InvalidKeyLabel.Size = UDim2.new(1, 0, 0.2, 0)
+InvalidKeyLabel.Position = UDim2.new(0, 0, 1, 0)
+InvalidKeyLabel.Text = ""
+InvalidKeyLabel.TextColor3 = Color3.fromRGB(255, 0, 0)
+InvalidKeyLabel.TextScaled = true
+InvalidKeyLabel.BackgroundTransparency = 1
 
 Fluent:Notify({
-    Title = "Beamed v2",
-    Content = "Please enter the key to continue.",
-    Duration = 8
+    Title = "Key System",
+    Content = "Enter the correct key to proceed.",
+    Duration = 5
 })
+
+SubmitButton.MouseButton1Click:Connect(function()
+    local enteredKey = KeyInput.Text
+    if enteredKey == key then
+        -- Key is correct, proceed to main script
+        KeyFrame:Destroy()
+        Fluent:Notify({
+            Title = "Access Granted",
+            Content = "Correct key entered! You may proceed.",
+            Duration = 5
+        })
+
+        -- Now we initialize the Fluent window and the rest of the script
+        local Window = Fluent:CreateWindow({
+            Title = "Beamed v2 " .. Fluent.Version,
+            SubTitle = "by ben1x1x1x1x/ben",
+            TabWidth = 125,
+            Size = UDim2.fromScale(0.9, 0.8), -- Scales the window to 90% width and 80% height of the screen
+            Position = UDim2.fromScale(0.05, 0.1), -- Centers the window on the screen with some padding
+            Acrylic = true, -- Blur effect (set to false to disable blur)
+            Theme = "Dark",
+            MinimizeKey = Enum.KeyCode.LeftControl -- Used when there's no MinimizeKeybind
+        })
+
+        local Tabs = {
+            Main = Window:AddTab({ Title = "Main", Icon = "" }),
+            Settings = Window:AddTab({ Title = "Settings", Icon = "settings" })
+        }
+
+        Fluent:Notify({
+            Title = "Notification",
+            Content = "Beamed v2 Loaded!",
+            SubContent = "SubContent", -- Optional
+            Duration = 5 -- Set to nil to make the notification not disappear
+        })
+
+        -- AutoFarm weights (equip any farming tools)
+        Tabs.Main:AddButton({
+            Title = "AutoFarm weights (equip any farming tools)",
+            Description = "Activates auto farming with the equipped tools.",
+            Callback = function()
+                while true do
+                    local args = {
+                        [1] = "rep"
+                    }
+
+                    game:GetService("Players").LocalPlayer.muscleEvent:FireServer(unpack(args))
+                    game:GetService("RunService").RenderStepped:Wait()
+                end
+            end
+        })
+
+        -- Fast weight (client side) (Unequip Weight first!)
+        Tabs.Main:AddButton({
+            Title = "Fast weight (client side)(Unequip Weight first!)",
+            Description = "Sets weight value to zero for faster weight gain.",
+            Callback = function()
+                game:GetService("Players").LocalPlayer.Backpack.Weight:FindFirstChildOfClass("NumberValue").Value = 0
+            end
+        })
+
+        -- Claim all chest
+        Tabs.Main:AddButton({
+            Title = "Claim all chests",
+            Description = "Teleports to chest locations to claim them.",
+            Callback = function()
+                local Players = game:GetService("Players")
+                local player = Players.LocalPlayer
+
+                local teleportPositions = {
+                    Vector3.new(41.00082015991211, 7.25372314453125, 413.7836608886719),
+                    Vector3.new(-2569.714111328125, 7.253732681274414, -552.041259765625),
+                    Vector3.new(2202.354248046875, 7.253730773925781, 905.2389526367188),
+                    Vector3.new(-6710.41064453125, 7.253731727600098, -1458.2186279296875),
+                    Vector3.new(4663.82177734375, 1000.9722290039062, -3698.064208984375)
+                }
+
+                local function teleportToPositions()
+                    local originalPosition = player.Character.HumanoidRootPart.Position
+
+                    for _, position in ipairs(teleportPositions) do
+                        player.Character.HumanoidRootPart.CFrame = CFrame.new(position)
+                        wait(1) -- Wait for 1 second at each position
+                    end
+
+                    player.Character.HumanoidRootPart.CFrame = CFrame.new(originalPosition)
+                end
+
+                teleportToPositions()
+            end
+        })
+
+        -- More buttons and functionalities as required...
+
+        -- Addons and saving configurations
+        SaveManager:SetLibrary(Fluent)
+        InterfaceManager:SetLibrary(Fluent)
+        SaveManager:IgnoreThemeSettings()
+        SaveManager:SetIgnoreIndexes({})
+        InterfaceManager:SetFolder("FluentScriptHub")
+        SaveManager:SetFolder("FluentScriptHub/specific-game")
+        InterfaceManager:BuildInterfaceSection(Tabs.Settings)
+        SaveManager:BuildConfigSection(Tabs.Settings)
+
+        Window:SelectTab(1)
+
+        Fluent:Notify({
+            Title = "Beamed v2",
+            Content = "The script has been loaded.",
+            Duration = 8
+        })
+
+        SaveManager:LoadAutoloadConfig()
+
+    else
+        -- Key is incorrect, show error message
+        InvalidKeyLabel.Text = "Incorrect Key!"
+        Fluent:Notify({
+            Title = "Access Denied",
+            Content = "Incorrect key entered! Please try again.",
+            Duration = 5
+        })
+        wait(2)
+        InvalidKeyLabel.Text = ""
+    end
+end)
