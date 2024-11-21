@@ -11,8 +11,8 @@ ScreenGui.Name = "KeySystemGui"
 
 local KeyFrame = Instance.new("Frame")
 KeyFrame.Parent = ScreenGui
-KeyFrame.Size = UDim2.new(0.4, 0, 0.3, 0)
-KeyFrame.Position = UDim2.new(0.3, 0, 0.35, 0)
+KeyFrame.Size = UDim2.new(0.4, 0, 0.4, 0) -- Increased height for the new button
+KeyFrame.Position = UDim2.new(0.3, 0, 0.3, 0)
 KeyFrame.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
 KeyFrame.BorderSizePixel = 3
 KeyFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
@@ -29,7 +29,7 @@ TitleLabel.BackgroundTransparency = 1
 local KeyInput = Instance.new("TextBox")
 KeyInput.Parent = KeyFrame
 KeyInput.Size = UDim2.new(0.8, 0, 0.2, 0)
-KeyInput.Position = UDim2.new(0.1, 0, 0.4, 0)
+KeyInput.Position = UDim2.new(0.1, 0, 0.3, 0)
 KeyInput.PlaceholderText = "Enter Key"
 KeyInput.TextColor3 = Color3.fromRGB(255, 255, 255)
 KeyInput.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
@@ -40,7 +40,7 @@ KeyInput.TextScaled = true
 local SubmitButton = Instance.new("TextButton")
 SubmitButton.Parent = KeyFrame
 SubmitButton.Size = UDim2.new(0.8, 0, 0.2, 0)
-SubmitButton.Position = UDim2.new(0.1, 0, 0.7, 0)
+SubmitButton.Position = UDim2.new(0.1, 0, 0.55, 0)
 SubmitButton.Text = "Submit"
 SubmitButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 SubmitButton.BackgroundColor3 = Color3.fromRGB(0, 150, 0)
@@ -56,6 +56,18 @@ InvalidKeyLabel.Text = ""
 InvalidKeyLabel.TextColor3 = Color3.fromRGB(255, 0, 0)
 InvalidKeyLabel.TextScaled = true
 InvalidKeyLabel.BackgroundTransparency = 1
+
+-- Discord Invite Button
+local DiscordInviteButton = Instance.new("TextButton")
+DiscordInviteButton.Parent = KeyFrame
+DiscordInviteButton.Size = UDim2.new(0.8, 0, 0.2, 0)
+DiscordInviteButton.Position = UDim2.new(0.1, 0, 0.8, 0) -- Positioned below the Submit button
+DiscordInviteButton.Text = "Discord Invite"
+DiscordInviteButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+DiscordInviteButton.BackgroundColor3 = Color3.fromRGB(0, 0, 255) -- Blue color
+DiscordInviteButton.BorderSizePixel = 2
+DiscordInviteButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
+DiscordInviteButton.TextScaled = true
 
 Fluent:Notify({
     Title = "Key System",
@@ -86,21 +98,14 @@ SubmitButton.MouseButton1Click:Connect(function()
             MinimizeKey = Enum.KeyCode.LeftControl -- Used when there's no MinimizeKeybind
         })
 
+        -- Create the Main Tab in Fluent Window
         local Tabs = {
             Main = Window:AddTab({ Title = "Main", Icon = "" }),
             Settings = Window:AddTab({ Title = "Settings", Icon = "settings" })
         }
 
-        Fluent:Notify({
-            Title = "Notification",
-            Content = "Beamed v2 Loaded!",
-            SubContent = "SubContent", -- Optional
-            Duration = 5 -- Set to nil to make the notification not disappear
-        })
-
-        -- AutoFarm weights (equip any farming tools)
         Tabs.Main:AddButton({
-            Title = "AutoFarm weights (equip any farming tools)",
+            Title = "AutoFarm weights",
             Description = "Activates auto farming with the equipped tools.",
             Callback = function()
                 while true do
@@ -114,16 +119,14 @@ SubmitButton.MouseButton1Click:Connect(function()
             end
         })
 
-        -- Fast weight (client side) (Unequip Weight first!)
         Tabs.Main:AddButton({
-            Title = "Fast weight (client side)(Unequip Weight first!)",
+            Title = "Fast weight",
             Description = "Sets weight value to zero for faster weight gain.",
             Callback = function()
                 game:GetService("Players").LocalPlayer.Backpack.Weight:FindFirstChildOfClass("NumberValue").Value = 0
             end
         })
 
-        -- Claim all chest
         Tabs.Main:AddButton({
             Title = "Claim all chests",
             Description = "Teleports to chest locations to claim them.",
@@ -154,28 +157,7 @@ SubmitButton.MouseButton1Click:Connect(function()
             end
         })
 
-        -- More buttons and functionalities as required...
-
-        -- Addons and saving configurations
-        SaveManager:SetLibrary(Fluent)
-        InterfaceManager:SetLibrary(Fluent)
-        SaveManager:IgnoreThemeSettings()
-        SaveManager:SetIgnoreIndexes({})
-        InterfaceManager:SetFolder("FluentScriptHub")
-        SaveManager:SetFolder("FluentScriptHub/specific-game")
-        InterfaceManager:BuildInterfaceSection(Tabs.Settings)
-        SaveManager:BuildConfigSection(Tabs.Settings)
-
-        Window:SelectTab(1)
-
-        Fluent:Notify({
-            Title = "Beamed v2",
-            Content = "The script has been loaded.",
-            Duration = 8
-        })
-
-        SaveManager:LoadAutoloadConfig()
-
+        -- Further functionalities as required can be added here
     else
         -- Key is incorrect, show error message
         InvalidKeyLabel.Text = "Incorrect Key!"
@@ -188,3 +170,16 @@ SubmitButton.MouseButton1Click:Connect(function()
         InvalidKeyLabel.Text = ""
     end
 end)
+
+-- Discord Invite Button click event
+DiscordInviteButton.MouseButton1Click:Connect(function()
+    -- Open the Discord invite link in a browser
+    setclipboard("https://discord.gg/JFFp2Y9BEV")
+    Fluent:Notify({
+        Title = "Discord Invite",
+        Content = "The Discord invite link has been copied to your clipboard.",
+        Duration = 5
+    })
+end)
+
+-- You can add additional Fluent UI elements here, such as tabs, buttons, and more.
