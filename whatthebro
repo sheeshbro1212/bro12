@@ -10,17 +10,18 @@ local Window = Fluent:CreateWindow({
     MinimizeKey = Enum.KeyCode.LeftControl
 })
 
-local MainTab = Window:AddTab("Main")
+local Tabs = Window:AddTab("Main")
 
--- Add a paragraph as a label
-MainTab:AddParagraph({
+-- Add Paragraph using Fluent's AddParagraph
+Tabs.Main:AddParagraph({
     Title = "----Script Hub----",
     Content = "Here are some useful features for the game!"
 })
 
--- Add buttons
-MainTab:AddButton({
+-- Add Button using Fluent's AddButton
+Tabs.Main:AddButton({
     Title = "AutoFarm weights (equip any farming tools)",
+    Description = "Farming tool auto-equipment",
     Callback = function()
         while true do
             local args = {
@@ -32,16 +33,18 @@ MainTab:AddButton({
     end
 })
 
-MainTab:AddButton({
+Tabs.Main:AddButton({
     Title = "Fast weight (client side)(Unequip Weight first!)",
+    Description = "Sets weight to 0 for client-side",
     Callback = function()
         game:GetService("Players").LocalPlayer.Backpack.Weight:FindFirstChildOfClass("NumberValue").Value = 0
     end
 })
 
--- Add teleport button
-MainTab:AddButton({
+-- Teleport Button
+Tabs.Main:AddButton({
     Title = "Claim all chest",
+    Description = "Teleports to chest locations",
     Callback = function()
         local player = game:GetService("Players").LocalPlayer
         local teleportPositions = {
@@ -64,75 +67,80 @@ MainTab:AddButton({
     end
 })
 
--- Time section
-MainTab:AddParagraph({
+-- Time Section with Buttons
+Tabs.Main:AddParagraph({
     Title = "----Time----",
     Content = "Choose a time to set the lighting."
 })
 
-MainTab:AddButton({
+Tabs.Main:AddButton({
     Title = "Morning",
+    Description = "Set the time to morning",
     Callback = function()
         game.Lighting.ClockTime = 7
     end
 })
 
-MainTab:AddButton({
+Tabs.Main:AddButton({
     Title = "Daytime",
+    Description = "Set the time to daytime",
     Callback = function()
         game.Lighting.ClockTime = 8
     end
 })
 
-MainTab:AddButton({
+Tabs.Main:AddButton({
     Title = "Night",
+    Description = "Set the time to night",
     Callback = function()
         game.Lighting.ClockTime = 5
     end
 })
 
 -- Add Fluent Toggle for Auto Brawl with God Mode
-MainTab:AddToggle({
+local AutoBrawlToggle = Tabs.Main:AddToggle("AutoBrawlGodMode", {
     Title = "Auto Join Brawl (God mode)",
-    Default = false,
-    Callback = function(state)
-        if state then
-            _G.autobrawl = true
-            repeat
-                local args = {
-                    [1] = "joinBrawl"
-                }
-                game:GetService("ReplicatedStorage").rEvents.brawlEvent:FireServer(unpack(args))
-                game:GetService("RunService").RenderStepped:Wait()
-            until not _G.autobrawl
-        else
-            _G.autobrawl = false
-        end
-    end
+    Default = false
 })
 
--- Add Fluent Toggle for Auto Join Brawl for Farming
-MainTab:AddToggle({
-    Title = "Auto Join Brawl (For Farming)",
-    Default = false,
-    Callback = function(state)
-        if state then
-            _G.autobrawl = true
-            repeat
-                local args = {
-                    [1] = "joinBrawl"
-                }
-                game:GetService("ReplicatedStorage").rEvents.brawlEvent:FireServer(unpack(args))
-                for i = 1, 60 do
-                    if not _G.autobrawl then break end
-                    wait(1)
-                end
-            until not _G.autobrawl
-        else
-            _G.autobrawl = false
-        end
+AutoBrawlToggle:OnChanged(function()
+    if AutoBrawlToggle.Value then
+        _G.autobrawl = true
+        repeat
+            local args = {
+                [1] = "joinBrawl"
+            }
+            game:GetService("ReplicatedStorage").rEvents.brawlEvent:FireServer(unpack(args))
+            game:GetService("RunService").RenderStepped:Wait()
+        until not _G.autobrawl
+    else
+        _G.autobrawl = false
     end
+end)
+
+-- Add Fluent Toggle for Auto Join Brawl for Farming
+local AutoBrawlFarmToggle = Tabs.Main:AddToggle("AutoBrawlFarming", {
+    Title = "Auto Join Brawl (For Farming)",
+    Default = false
 })
+
+AutoBrawlFarmToggle:OnChanged(function()
+    if AutoBrawlFarmToggle.Value then
+        _G.autobrawl = true
+        repeat
+            local args = {
+                [1] = "joinBrawl"
+            }
+            game:GetService("ReplicatedStorage").rEvents.brawlEvent:FireServer(unpack(args))
+            for i = 1, 60 do
+                if not _G.autobrawl then break end
+                wait(1)
+            end
+        until not _G.autobrawl
+    else
+        _G.autobrawl = false
+    end
+end)
 
 -- Show the window
 Window:SelectTab(1)
