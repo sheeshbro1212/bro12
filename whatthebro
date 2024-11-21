@@ -2275,7 +2275,7 @@ end
 
 local window = library:AddWindow("Beamed V2", {
 	main_color = Color3.fromRGB(96, 96, 96), -- Color
-    min_size = Vector2.new(510, 510), -- Size of the gui
+    min_size = Vector2.new(525, 550), -- Size of the gui
 	can_resize = false, -- true or false
 })
 
