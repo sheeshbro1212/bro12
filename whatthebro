@@ -1,4 +1,4 @@
-local BeamedV2 = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawidzz11/Beamed-V2/main/BeamedV2.lua"))()
+local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
 local window = BeamedV2:CreateWindow({
     Title = "Beamed V2",
     SubTitle = "by dawid",
