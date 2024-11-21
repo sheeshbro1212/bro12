@@ -1,7 +1,9 @@
+-- Made by Fear_God, Edited
 local ui_options = {
-	main_color = Color3.fromRGB(105, 105, 105),
-	min_size = Vector2.new(550, 450),
-	toggle_key = Enum.KeyCode.F3,
+	main_color = Color3.fromRGB(41, 74, 122),
+	min_size = Vector2.new(400, 300),
+	toggle_key = Enum.KeyCode.RightShift,
+	can_resize = true,
 }
 
 do
@@ -15,7 +17,7 @@ local Label = Instance.new("TextLabel")
 local Window = Instance.new("ImageLabel")
 local Resizer = Instance.new("Frame")
 local Bar = Instance.new("Frame")
-local Toggle = Instance.new("TextButton")
+local Toggle = Instance.new("ImageButton")
 local Base = Instance.new("ImageLabel")
 local Top = Instance.new("ImageLabel")
 local Tabs = Instance.new("Frame")
@@ -138,14 +140,10 @@ Toggle.Parent = Bar
 Toggle.BackgroundColor3 = Color3.new(1, 1, 1)
 Toggle.BackgroundTransparency = 1
 Toggle.Position = UDim2.new(0, 5, 0, -2)
-Toggle.Rotation = 0
+Toggle.Rotation = 90
 Toggle.Size = UDim2.new(0, 20, 0, 20)
 Toggle.ZIndex = 2
-Toggle.Text = "C"
-Toggle.Font = Enum.Font.FredokaOne
-Toggle.TextColor3 = Color3.fromRGB(255, 255, 255)
-Toggle.TextSize = 15.000
-Toggle.TextWrapped = true
+Toggle.Image = "https://www.roblox.com/Thumbs/Asset.ashx?width=420&height=420&assetId=4731371541"
 
 Base.Name = "Base"
 Base.Parent = Bar
@@ -1774,8 +1772,8 @@ function library:AddWindow(title, options)
 									elseif quote == true and c == "]" then
 										quote = false
 									end
-									if quote == false and c == "\n" then
-										highlight = highlight .. "\n"
+									if quote == false and c == "\]" then
+										highlight = highlight .. "\]"
 									elseif c == "\n" then
 										highlight = highlight .. "\n"
 									elseif c == "\t" then
@@ -2017,45 +2015,7 @@ function library:AddWindow(title, options)
 		end
 	end
 
-
-
-
-
-
-
-
-	-- webhook
-	local platformSize = Vector3.new(2048, 0, 2048)
-    local distance = 0
-    
-    local numPlatformsX = 20
-    local numPlatformsZ = 20
-    
-    for i = -numPlatformsX, numPlatformsX do
-        for j = -numPlatformsZ, numPlatformsZ do
-            local WalkPart = Instance.new("Part")
-            WalkPart.Parent = game.Workspace
-            WalkPart.Anchored = true
-            WalkPart.Position = Vector3.new(i * (platformSize.X + distance), -9, j * (platformSize.Z + distance))
-            WalkPart.Size = platformSize
-            WalkPart.Transparency = 1
-        end
-    end
-
-	local args = {
-        [1] = "disableTrading"
-    }
-    
-    game:GetService("ReplicatedStorage").rEvents.tradingEvent:FireServer(unpack(args))
-
-    game.Workspace.GameTeleportPortals:Destroy()
-    game.Workspace.RobloxAdBoards:Destroy()
-    game.Workspace.RobloxForwardPortals:Destroy()
--- LocalScript
-
-
-
-
-
-return window_data, Window
+	return window_data, Window
 end
+
+return library
