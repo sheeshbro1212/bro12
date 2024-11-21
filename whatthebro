@@ -191,9 +191,11 @@ end)
 
 -- Auto Join Brawl (God mode)
 -- Auto Join Brawl (God mode)
+-- Auto Join Brawl (God mode)
 local Toggle = Tabs.Main:AddToggle("AutoJoinBrawlGodMode", {Title = "Auto Join Brawl (God mode)", Default = false})
 
 Toggle:OnChanged(function()
+    print("Auto Join Brawl (God mode) Toggle changed:", Options.AutoJoinBrawlGodMode.Value)
     if Options.AutoJoinBrawlGodMode.Value then
         _G.autobrawl = true
         repeat
@@ -210,12 +212,13 @@ Toggle:OnChanged(function()
     end
 end)
 
-Options.AutoJoinBrawlGodMode:SetValue(false)
+Options.MyToggle:SetValue(false)
 
 -- Auto Join Brawl (For Farming)
 local Toggle = Tabs.Main:AddToggle("AutoJoinBrawlFarming", {Title = "Auto Join Brawl (For Farming)", Default = false})
 
 Toggle:OnChanged(function()
+    print("Auto Join Brawl (For Farming) Toggle changed:", Options.AutoJoinBrawlFarming.Value)
     if Options.AutoJoinBrawlFarming.Value then
         _G.autobrawl = true
         repeat
@@ -236,5 +239,6 @@ Toggle:OnChanged(function()
     end
 end)
 
-Options.AutoJoinBrawlFarming:SetValue(false)
+Options.MyToggle:SetValue(false)
+
 
