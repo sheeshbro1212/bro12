@@ -6,36 +6,36 @@ local Window = Fluent:CreateWindow({
     Title = "Fluent " .. Fluent.Version,
     SubTitle = "by dawid",
     TabWidth = 160,
-    Size = UDim2.fromOffset(580, 460),
+    Size = UDim2.fromOffset(450, 400),
     Acrylic = true,
     Theme = "Dark",
     MinimizeKey = Enum.KeyCode.LeftControl
 })
 
 -- Creating a single Tab
-local MainTab = Window:AddTab({
-    Title = "Main",
-    Icon = ""  -- You can add an icon here if you like
-})
+local MainTab = Window:AddTab("Main")
 
--- Adding Buttons and Switches directly under the MainTab
+-- Add buttons and switches directly under the MainTab
 
 -- AutoFarm Button
-MainTab:AddButton("AutoFarm weights (equip any farming tools)", function()
-    while true do
-        local args = {
-            [1] = "rep"
-        }
-
-        game:GetService("Players").LocalPlayer.muscleEvent:FireServer(unpack(args))
-        game:GetService("RunService").RenderStepped:Wait()
+MainTab:AddButton({
+    Text = "AutoFarm weights (equip any farming tools)",
+    Callback = function()
+        while true do
+            local args = { [1] = "rep" }
+            game:GetService("Players").LocalPlayer.muscleEvent:FireServer(unpack(args))
+            game:GetService("RunService").RenderStepped:Wait()
+        end
     end
-end)
+})
 
 -- Fast weight Button
-MainTab:AddButton("Fast weight (client side)(Uneqiup Weight first!)", function()
-    game:GetService("Players").LocalPlayer.Backpack.Weight:FindFirstChildOfClass("NumberValue").Value = 0
-end)
+MainTab:AddButton({
+    Text = "Fast weight (client side)(Uneqiup Weight first!)",
+    Callback = function()
+        game:GetService("Players").LocalPlayer.Backpack.Weight:FindFirstChildOfClass("NumberValue").Value = 0
+    end
+})
 
 -- Teleport Function
 local teleportPositions = {
@@ -48,79 +48,91 @@ local teleportPositions = {
 
 local function teleportToPositions()
     local originalPosition = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position
-
     for _, position in ipairs(teleportPositions) do
         game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(position)
         wait(1)
     end
-
     game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(originalPosition)
 end
 
 -- Claim All Chest Button
-MainTab:AddButton("Claim all chest", function()
-    teleportToPositions()
-end)
+MainTab:AddButton({
+    Text = "Claim all chest",
+    Callback = function()
+        teleportToPositions()
+    end
+})
 
 -- Permanent Shiftlock Button
-MainTab:AddButton("Permanent Shiftlock", function()
-    loadstring(game:HttpGet('https://pastebin.com/raw/CjNsnSDy'))()
-end)
+MainTab:AddButton({
+    Text = "Permanent Shiftlock",
+    Callback = function()
+        loadstring(game:HttpGet('https://pastebin.com/raw/CjNsnSDy'))()
+    end
+})
 
 -- Time Buttons
 MainTab:AddLabel("----Time----")
 
-MainTab:AddButton("Morning", function()
-    game.Lighting.ClockTime = 7
-end)
+MainTab:AddButton({
+    Text = "Morning",
+    Callback = function()
+        game.Lighting.ClockTime = 7
+    end
+})
 
-MainTab:AddButton("Daytime", function()
-    game.Lighting.ClockTime = 8
-end)
+MainTab:AddButton({
+    Text = "Daytime",
+    Callback = function()
+        game.Lighting.ClockTime = 8
+    end
+})
 
-MainTab:AddButton("Night", function()
-    game.Lighting.ClockTime = 5
-end)
+MainTab:AddButton({
+    Text = "Night",
+    Callback = function()
+        game.Lighting.ClockTime = 5
+    end
+})
 
 -- Farming Labels
 MainTab:AddLabel("----Farming----")
 
 -- Auto Brawl Switches
-MainTab:AddSwitch("Auto Join Brawl (God mode)", function(bool)
-    if bool then
-        _G.autobrawl = true
-        repeat
-            local args = {
-                [1] = "joinBrawl"
-            }
-
-            game:GetService("ReplicatedStorage").rEvents.brawlEvent:FireServer(unpack(args))
-            game:GetService("RunService").RenderStepped:Wait()
-        until not _G.autobrawl
-    else
-        _G.autobrawl = false
+MainTab:AddSwitch({
+    Text = "Auto Join Brawl (God mode)",
+    Callback = function(bool)
+        if bool then
+            _G.autobrawl = true
+            repeat
+                local args = { [1] = "joinBrawl" }
+                game:GetService("ReplicatedStorage").rEvents.brawlEvent:FireServer(unpack(args))
+                game:GetService("RunService").RenderStepped:Wait()
+            until not _G.autobrawl
+        else
+            _G.autobrawl = false
+        end
     end
-end)
+})
 
-MainTab:AddSwitch("Auto Join Brawl (For Farming)", function(bool)
-    if bool then
-        _G.autobrawl = true
-        repeat
-            local args = {
-                [1] = "joinBrawl"
-            }
-
-            game:GetService("ReplicatedStorage").rEvents.brawlEvent:FireServer(unpack(args))
-
-            for i = 1, 60 do
-                if not _G.autobrawl then break end
-                wait(1)
-            end
-        until not _G.autobrawl
-    else
-        _G.autobrawl = false
+MainTab:AddSwitch({
+    Text = "Auto Join Brawl (For Farming)",
+    Callback = function(bool)
+        if bool then
+            _G.autobrawl = true
+            repeat
+                local args = { [1] = "joinBrawl" }
+                game:GetService("ReplicatedStorage").rEvents.brawlEvent:FireServer(unpack(args))
+                for i = 1, 60 do
+                    if not _G.autobrawl then break end
+                    wait(1)
+                end
+            until not _G.autobrawl
+        else
+            _G.autobrawl = false
+        end
     end
-end)
+})
 
 -- Notify that the script has loaded
 Fluent:Notify({
