@@ -1,172 +1,162 @@
-local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/memejames/elerium-v2-ui-library//main/Library", true))()
-
-local window = library:AddWindow("Name GUI", {
-	main_color = Color3.fromRGB(41, 74, 122),
-	min_size = Vector2.new(250, 346),
-	can_resize = false,
+local BeamedV2 = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawidzz11/Beamed-V2/main/BeamedV2.lua"))()
+local window = BeamedV2:CreateWindow({
+    Title = "Beamed V2",
+    SubTitle = "by dawid",
+    TabWidth = 160,
+    Size = UDim2.fromOffset(580, 460),
+    Acrylic = true,
+    Theme = "Dark",
+    MinimizeKey = Enum.KeyCode.LeftControl
 })
 
-local servertab = window:AddTab("Features")
-features:Show()
+local mainTab = window:AddTab("Main")
 
-local playerData = {}
-local currentSelectedPlayer = nil
-local notFoundLabel = nil
-local selectedPlayerName = nil
+local MiscFolder = mainTab:AddFolder("Misc")
 
-local function abbreviateNumber(value)
-    if value >= 1e15 then
-        return string.format("%.1fQa", value / 1e15)
-    elseif value >= 1e12 then
-        return string.format("%.1fT", value / 1e12)
-    elseif value >= 1e9 then
-        return string.format("%.1fB", value / 1e9)
-    elseif value >= 1e6 then
-        return string.format("%.1fM", value / 1e6)
-    elseif value >= 1e3 then
-        return string.format("%.1fK", value / 1e3)
-    else
-        return tostring(value)
+-- AutoFarm Button
+MiscFolder:AddButton({
+    Title = "AutoFarm weights (equip any farming tools)",
+    Description = "Starts auto-farming with the selected tools",
+    Callback = function()
+        while true do
+            local args = { [1] = "rep" }
+            game:GetService("Players").LocalPlayer.muscleEvent:FireServer(unpack(args))
+            game:GetService("RunService").RenderStepped:Wait()
+        end
     end
+})
+
+-- Fast Weight Button
+MiscFolder:AddButton({
+    Title = "Fast weight (client side)(Unequip Weight first!)",
+    Description = "Sets weight value to 0 for fast weight",
+    Callback = function()
+        game:GetService("Players").LocalPlayer.Backpack.Weight:FindFirstChildOfClass("NumberValue").Value = 0
+    end
+})
+
+-- Teleport Positions
+local teleportPositions = {
+    Vector3.new(41.00082015991211, 7.25372314453125, 413.7836608886719),
+    Vector3.new(-2569.714111328125, 7.253732681274414, -552.041259765625),
+    Vector3.new(2202.354248046875, 7.253730773925781, 905.2389526367188),
+    Vector3.new(-6710.41064453125, 7.253731727600098, -1458.2186279296875),
+    Vector3.new(4663.82177734375, 1000.9722290039062, -3698.064208984375)
+}
+
+local function teleportToPositions()
+    local player = game:GetService("Players").LocalPlayer
+    local originalPosition = player.Character.HumanoidRootPart.Position
+
+    for _, position in ipairs(teleportPositions) do
+        player.Character.HumanoidRootPart.CFrame = CFrame.new(position)
+        wait(1) -- Wait for 1 second at each position
+    end
+
+    player.Character.HumanoidRootPart.CFrame = CFrame.new(originalPosition)
 end
 
-local function createPlayerLabels(player)
-    local playerName = player.Name
-    local leaderstats = player:FindFirstChild("leaderstats")
-    local equippedPets = player:FindFirstChild("equippedPets")
-    local ownedGamepasses = player:FindFirstChild("ownedGamepasses")
-
-    local labels = {
-        StrengthLabel = servertab:AddLabel("Strength: " .. abbreviateNumber((leaderstats and leaderstats:FindFirstChild("Strength") and leaderstats.Strength.Value) or 0)),
-        DurabilityLabel = servertab:AddLabel("Durability: " .. abbreviateNumber((player:FindFirstChild("Durability") and player.Durability.Value) or 0)),
-        KillsLabel = servertab:AddLabel("Kills: " .. abbreviateNumber((leaderstats and leaderstats:FindFirstChild("Kills") and leaderstats.Kills.Value) or 0)),
-        BrawlsLabel = servertab:AddLabel("Brawls: " .. abbreviateNumber((leaderstats and leaderstats:FindFirstChild("Brawls") and leaderstats.Brawls.Value) or 0)),
-        AgilityLabel = servertab:AddLabel("Agility: " .. abbreviateNumber((player:FindFirstChild("Agility") and player.Agility.Value) or 0)),
-        EvilKarmaLabel = servertab:AddLabel("evilKarma: " .. abbreviateNumber((player:FindFirstChild("evilKarma") and player.evilKarma.Value) or 0)),
-        GoodKarmaLabel = servertab:AddLabel("goodKarma: " .. abbreviateNumber((player:FindFirstChild("goodKarma") and player.goodKarma.Value) or 0)),
-        MapLabel = servertab:AddLabel("Map: " .. ((player:FindFirstChild("currentMap") and player.currentMap.Value) or "N/A")),
-        KingTimeLabel = servertab:AddLabel("KingTime: " .. abbreviateNumber((player:FindFirstChild("muscleKingTime") and player.muscleKingTime.Value) or 0)),
-        PremiumLabel = servertab:AddLabel("Premium: " .. (player.MembershipType == Enum.MembershipType.Premium and "true" or "false")),
-    }
-
-    for i = 1, 5 do
-        local petValue = equippedPets and equippedPets:FindFirstChild("pet" .. i) and equippedPets["pet" .. i].Value or "N/A"
-        labels["Pet" .. i .. "Label"] = servertab:AddLabel("Pet" .. i .. ": " .. tostring(petValue))
+-- Claim All Chest Button
+MiscFolder:AddButton({
+    Title = "Claim all chest",
+    Description = "Teleports to predefined chest positions",
+    Callback = function()
+        teleportToPositions()
     end
+})
 
-    local gamepassList = {}
-    if ownedGamepasses then
-        for _, gamepass in ipairs(ownedGamepasses:GetChildren()) do
-            table.insert(gamepassList, gamepass.Name)
+-- Script Hub Label
+MiscFolder:AddParagraph({
+    Title = "----Script Hub----",
+    Content = ""
+})
+
+-- Permanent Shiftlock Button
+MiscFolder:AddButton({
+    Title = "Permanent Shiftlock",
+    Description = "Enables permanent shiftlock",
+    Callback = function()
+        loadstring(game:HttpGet('https://pastebin.com/raw/CjNsnSDy'))()
+    end
+})
+
+-- Time Controls Section
+MiscFolder:AddParagraph({
+    Title = "----Time----",
+    Content = ""
+})
+
+-- Morning Button
+MiscFolder:AddButton({
+    Title = "Morning",
+    Description = "Sets game time to morning",
+    Callback = function()
+        game.Lighting.ClockTime = 7
+    end
+})
+
+-- Daytime Button
+MiscFolder:AddButton({
+    Title = "Daytime",
+    Description = "Sets game time to daytime",
+    Callback = function()
+        game.Lighting.ClockTime = 8
+    end
+})
+
+-- Night Button
+MiscFolder:AddButton({
+    Title = "Night",
+    Description = "Sets game time to night",
+    Callback = function()
+        game.Lighting.ClockTime = 5
+    end
+})
+
+-- Farming Section Label
+MiscFolder:AddParagraph({
+    Title = "----Farming----",
+    Content = ""
+})
+
+-- Auto Brawl Section
+local AutoBrawlFolder = mainTab:AddFolder("Auto Brawl")
+
+-- Auto Join Brawl (God Mode) Switch
+AutoBrawlFolder:AddToggle({
+    Title = "Auto Join Brawl (God mode)",
+    Default = false,
+    Callback = function(isOn)
+        if isOn then
+            _G.autobrawl = true
+            repeat
+                local args = { [1] = "joinBrawl" }
+                game:GetService("ReplicatedStorage").rEvents.brawlEvent:FireServer(unpack(args))
+                game:GetService("RunService").RenderStepped:Wait()
+            until not _G.autobrawl
+        else
+            _G.autobrawl = false
         end
     end
+})
 
-    local gamepassesText = #gamepassList > 0 and table.concat(gamepassList, ", ") or "N/A"
-    labels.GamepassesLabel = servertab:AddLabel("ownedGamepasses: " .. gamepassesText)
-
-    playerData[playerName] = labels
-
-    if leaderstats then
-        if leaderstats:FindFirstChild("Kills") then
-            leaderstats.Kills.Changed:Connect(function()
-                labels.KillsLabel.Text = "Kills: " .. abbreviateNumber(leaderstats.Kills.Value or 0)
-            end)
-        end
-        if leaderstats:FindFirstChild("Strength") then
-            leaderstats.Strength.Changed:Connect(function()
-                labels.StrengthLabel.Text = "Strength: " .. abbreviateNumber(leaderstats.Strength.Value or 0)
-            end)
-        end
-        if leaderstats:FindFirstChild("Brawls") then
-            leaderstats.Brawls.Changed:Connect(function()
-                labels.BrawlsLabel.Text = "Brawls: " .. abbreviateNumber(leaderstats.Brawls.Value or 0)
-            end)
+-- Auto Join Brawl (For Farming) Switch
+AutoBrawlFolder:AddToggle({
+    Title = "Auto Join Brawl (For Farming)",
+    Default = false,
+    Callback = function(isOn)
+        if isOn then
+            _G.autobrawl = true
+            repeat
+                local args = { [1] = "joinBrawl" }
+                game:GetService("ReplicatedStorage").rEvents.brawlEvent:FireServer(unpack(args))
+                for i = 1, 60 do
+                    if not _G.autobrawl then break end
+                    wait(1)
+                end
+            until not _G.autobrawl
+        else
+            _G.autobrawl = false
         end
     end
-
-    if player:FindFirstChild("Durability") then
-        player.Durability.Changed:Connect(function()
-            labels.DurabilityLabel.Text = "Durability: " .. abbreviateNumber(player.Durability.Value or 0)
-        end)
-    end
-
-    if player:FindFirstChild("Agility") then
-        player.Agility.Changed:Connect(function()
-            labels.AgilityLabel.Text = "Agility: " .. abbreviateNumber(player.Agility.Value or 0)
-        end)
-    end
-
-    if player:FindFirstChild("evilKarma") then
-        player.evilKarma.Changed:Connect(function()
-            labels.EvilKarmaLabel.Text = "evilKarma: " .. abbreviateNumber(player.evilKarma.Value or 0)
-        end)
-    end
-
-    if player:FindFirstChild("goodKarma") then
-        player.goodKarma.Changed:Connect(function()
-            labels.GoodKarmaLabel.Text = "goodKarma: " .. abbreviateNumber(player.goodKarma.Value or 0)
-        end)
-    end
-
-    if player:FindFirstChild("currentMap") then
-        player.currentMap.Changed:Connect(function()
-            labels.MapLabel.Text = "Map: " .. (player.currentMap.Value or "N/A")
-        end)
-    end
-
-    if player:FindFirstChild("muscleKingTime") then
-        player.muscleKingTime.Changed:Connect(function()
-            labels.KingTimeLabel.Text = "KingTime: " .. abbreviateNumber(player.muscleKingTime.Value or 0)
-        end)
-    end
-end
-
-local function removePlayerLabels(playerName)
-    local labels = playerData[playerName]
-    if labels then
-        for _, label in pairs(labels) do
-            label:Remove()
-        end
-        playerData[playerName] = nil
-    end
-end
-
-local textbox = servertab:AddTextBox("Player Name", function(playerName)
-    selectedPlayerName = playerName
-    if notFoundLabel then
-        notFoundLabel:Remove()
-        notFoundLabel = nil
-    end
-
-    local player = game.Players:FindFirstChild(playerName)
-    if not player then
-        notFoundLabel = servertab:AddLabel("Player not found!")
-        selectedPlayerName = nil
-    end
-end)
-
-servertab:AddButton("Reveal Stats", function()
-    local player = game.Players:FindFirstChild(selectedPlayerName)
-    if player then
-        if currentSelectedPlayer then
-            removePlayerLabels(currentSelectedPlayer)
-        end
-        createPlayerLabels(player)
-        currentSelectedPlayer = selectedPlayerName
-    else
-        if notFoundLabel == nil then
-            notFoundLabel = servertab:AddLabel("Player not found!")
-        end
-    end
-end)
-
-game.Players.PlayerRemoving:Connect(function(player)
-    local playerName = player.Name
-    if playerData[playerName] then
-        removePlayerLabels(playerName)
-    end
-    if playerName == selectedPlayerName then
-        currentSelectedPlayer = nil
-        selectedPlayerName = nil
-    end
-end)
+})
