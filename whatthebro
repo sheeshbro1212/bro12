@@ -5,12 +5,14 @@ local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.
 local Window = Fluent:CreateWindow({
     Title = "Beamed v2 " .. Fluent.Version,
     SubTitle = "by ben1x1x1x1x/ben",
-    TabWidth = 150,
-    Size = UDim2.fromOffset(300, 300),
-    Acrylic = true, -- The blur may be detectable, setting this to false disables blur entirely
+    TabWidth = 125,
+    Size = UDim2.fromScale(0.9, 0.8), -- Scales the window to 90% width and 80% height of the screen
+    Position = UDim2.fromScale(0.05, 0.1), -- Centers the window on the screen with some padding
+    Acrylic = true, -- Blur effect (set to false to disable blur)
     Theme = "Dark",
-    MinimizeKey = Enum.KeyCode.LeftControl -- Used when theres no MinimizeKeybind
+    MinimizeKey = Enum.KeyCode.LeftControl -- Used when there's no MinimizeKeybind
 })
+
 
 --Fluent provides Lucide Icons https://lucide.dev/icons/ for the tabs, icons are optional
 local Tabs = {
