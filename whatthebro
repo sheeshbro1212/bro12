@@ -114,8 +114,7 @@ function showMainGUI()
     local Killing = window:AddTab("Killing")
 	local Player = window:AddTab("Players")
 	local Stats = window:AddTab("Stats")
-	local Teleport = window:AddTab("Teleport")
-	local Credit = window:AddTab("Credit")
+
 
 
 
@@ -199,6 +198,149 @@ folder:AddButton("Night", function()
     game.Lighting.ClockTime = 5
 end)
 
+local folder = Main:AddFolder("Teleports")
+
+folder:AddButton("BeachTP", function()
+    local player = game.Players.LocalPlayer
+    local character = player.Character
+    local targetPosition = Vector3.new(-13, 5, 134)
+
+    if character then
+        character.HumanoidRootPart.CFrame = CFrame.new(targetPosition)
+    end
+end)
+
+folder:AddButton("LegendsTP", function()
+    local player = game.Players.LocalPlayer
+    local character = player.Character
+    local targetPosition = Vector3.new(4609, 989, -3903)
+
+    if character then
+        character.HumanoidRootPart.CFrame = CFrame.new(targetPosition)
+    end
+end)
+
+folder:AddButton("MythicalTP", function()
+    local player = game.Players.LocalPlayer
+    local character = player.Character
+    local targetPosition = Vector3.new(2250, 5.2, 1073)
+
+    if character then
+        character.HumanoidRootPart.CFrame = CFrame.new(targetPosition)
+    end
+end)
+
+folder:AddButton("FrostTP", function()
+    local player = game.Players.LocalPlayer
+    local character = player.Character
+    local targetPosition = Vector3.new(-2623, 5, -409)
+
+    if character then
+        character.HumanoidRootPart.CFrame = CFrame.new(targetPosition)
+    end
+end)
+
+folder:AddButton("InfernoTP", function()
+    local player = game.Players.LocalPlayer
+    local character = player.Character
+    local targetPosition = Vector3.new(-6758, 5, -1284)
+
+    if character then
+        character.HumanoidRootPart.CFrame = CFrame.new(targetPosition)
+    end
+end)
+
+folder:AddButton("KingTP", function()
+    local player = game.Players.LocalPlayer
+    local character = player.Character
+    local targetPosition = Vector3.new(-8625, 15, -5730)
+
+    if character then
+        character.HumanoidRootPart.CFrame = CFrame.new(targetPosition)
+    end
+end)
+
+folder:AddButton("TinyTP", function()
+    local player = game.Players.LocalPlayer
+    local character = player.Character
+    local targetPosition = Vector3.new(-32, 5, 1897)
+
+    if character then
+        character.HumanoidRootPart.CFrame = CFrame.new(targetPosition)
+    end
+end)
+
+folder:AddButton("SecretTP", function()
+    local player = game.Players.LocalPlayer
+    local character = player.Character
+    local targetPosition = Vector3.new(1954, -0.2, 6182)
+
+    if character then
+        character.HumanoidRootPart.CFrame = CFrame.new(targetPosition)
+    end
+end)
+
+folder:AddButton("Desert Brawl TP", function()
+    local player = game.Players.LocalPlayer
+    local character = player.Character
+    local targetPosition = Vector3.new(908, 103, -7016) -- Desert Brawl coordinates
+
+    if character then
+        character.HumanoidRootPart.CFrame = CFrame.new(targetPosition)
+    end
+end)
+
+folder:AddButton("Beach Brawl TP", function()
+    local player = game.Players.LocalPlayer
+    local character = player.Character
+    local targetPosition = Vector3.new(-1812, 103, -5914) -- Beach Brawl coordinates
+
+    if character then
+        character.HumanoidRootPart.CFrame = CFrame.new(targetPosition)
+    end
+end)
+
+folder:AddButton("Magma Brawl TP", function()
+    local player = game.Players.LocalPlayer
+    local character = player.Character
+    local targetPosition = Vector3.new(4517, 103, -8420) -- Magma Brawl coordinates
+
+    if character then
+        character.HumanoidRootPart.CFrame = CFrame.new(targetPosition)
+    end
+end)
+
+folder:AddButton("Fortune Wheel TP", function()
+    local player = game.Players.LocalPlayer
+    local character = player.Character
+    local targetPosition = Vector3.new(-2611, 3, 5768) -- Fortune Wheel coordinates
+
+    if character then
+        character.HumanoidRootPart.CFrame = CFrame.new(targetPosition)
+    end
+end)
+
+local folder = Main:AddFolder("Credits (READ)")
+folder:AddLabel("Script Made by : Ben1x1x1x1x (Ben/Beamed)")
+folder:AddLabel("Beamed V2 (Free Version)")
+
+folder:AddLabel("---Close Friends---")
+
+folder:AddLabel("Yupman")
+folder:AddLabel("Jay")
+folder:AddLabel("Ruth")
+folder:AddLabel("LuckyIIIV -- Gay Best Friend LMAO")
+folder:AddLabel("Sul")
+
+folder:AddLabel("----------")
+
+folder:AddLabel("Gayming Broski!!")
+
+folder:AddLabel("----------")
+
+folder:AddButton("Copy Discord Invite", function()
+    setclipboard("https://discord.gg/JFFp2Y9BEV")
+end)
 Main:AddLabel("----Farming----")
 
 -- folder again XD
@@ -2441,148 +2583,6 @@ end)
 -- Teleporting tab 
 
 
-Teleport:AddButton("BeachTP", function()
-    local player = game.Players.LocalPlayer
-    local character = player.Character
-    local targetPosition = Vector3.new(-13, 5, 134)
-
-    if character then
-        character.HumanoidRootPart.CFrame = CFrame.new(targetPosition)
-    end
-end)
-
-Teleport:AddButton("LegendsTP", function()
-    local player = game.Players.LocalPlayer
-    local character = player.Character
-    local targetPosition = Vector3.new(4609, 989, -3903)
-
-    if character then
-        character.HumanoidRootPart.CFrame = CFrame.new(targetPosition)
-    end
-end)
-
-Teleport:AddButton("MythicalTP", function()
-    local player = game.Players.LocalPlayer
-    local character = player.Character
-    local targetPosition = Vector3.new(2250, 5.2, 1073)
-
-    if character then
-        character.HumanoidRootPart.CFrame = CFrame.new(targetPosition)
-    end
-end)
-
-Teleport:AddButton("FrostTP", function()
-    local player = game.Players.LocalPlayer
-    local character = player.Character
-    local targetPosition = Vector3.new(-2623, 5, -409)
-
-    if character then
-        character.HumanoidRootPart.CFrame = CFrame.new(targetPosition)
-    end
-end)
-
-Teleport:AddButton("InfernoTP", function()
-    local player = game.Players.LocalPlayer
-    local character = player.Character
-    local targetPosition = Vector3.new(-6758, 5, -1284)
-
-    if character then
-        character.HumanoidRootPart.CFrame = CFrame.new(targetPosition)
-    end
-end)
-
-Teleport:AddButton("KingTP", function()
-    local player = game.Players.LocalPlayer
-    local character = player.Character
-    local targetPosition = Vector3.new(-8625, 15, -5730)
-
-    if character then
-        character.HumanoidRootPart.CFrame = CFrame.new(targetPosition)
-    end
-end)
-
-Teleport:AddButton("TinyTP", function()
-    local player = game.Players.LocalPlayer
-    local character = player.Character
-    local targetPosition = Vector3.new(-32, 5, 1897)
-
-    if character then
-        character.HumanoidRootPart.CFrame = CFrame.new(targetPosition)
-    end
-end)
-
-Teleport:AddButton("SecretTP", function()
-    local player = game.Players.LocalPlayer
-    local character = player.Character
-    local targetPosition = Vector3.new(1954, -0.2, 6182)
-
-    if character then
-        character.HumanoidRootPart.CFrame = CFrame.new(targetPosition)
-    end
-end)
-
-Teleport:AddButton("Desert Brawl TP", function()
-    local player = game.Players.LocalPlayer
-    local character = player.Character
-    local targetPosition = Vector3.new(908, 103, -7016) -- Desert Brawl coordinates
-
-    if character then
-        character.HumanoidRootPart.CFrame = CFrame.new(targetPosition)
-    end
-end)
-
-Teleport:AddButton("Beach Brawl TP", function()
-    local player = game.Players.LocalPlayer
-    local character = player.Character
-    local targetPosition = Vector3.new(-1812, 103, -5914) -- Beach Brawl coordinates
-
-    if character then
-        character.HumanoidRootPart.CFrame = CFrame.new(targetPosition)
-    end
-end)
-
-Teleport:AddButton("Magma Brawl TP", function()
-    local player = game.Players.LocalPlayer
-    local character = player.Character
-    local targetPosition = Vector3.new(4517, 103, -8420) -- Magma Brawl coordinates
-
-    if character then
-        character.HumanoidRootPart.CFrame = CFrame.new(targetPosition)
-    end
-end)
-
-Teleport:AddButton("Fortune Wheel TP", function()
-    local player = game.Players.LocalPlayer
-    local character = player.Character
-    local targetPosition = Vector3.new(-2611, 3, 5768) -- Fortune Wheel coordinates
-
-    if character then
-        character.HumanoidRootPart.CFrame = CFrame.new(targetPosition)
-    end
-end)
-
-
--- Credit Section
-Credit:AddLabel("Script Made by : Ben1x1x1x1x (Ben/Beamed)")
-Credit:AddLabel("Beamed V2 (Free Version)")
-
-Credit:AddLabel("---Close Friends---")
-
-Credit:AddLabel("Yupman")
-Credit:AddLabel("Jay")
-Credit:AddLabel("Ruth")
-Credit:AddLabel("LuckyIIIV -- Gay Best Friend LMAO")
-Credit:AddLabel("Sul")
-
-Credit:AddLabel("----------")
-
-Credit:AddLabel("Gayming Broski!!")
-
-Credit:AddLabel("----------")
-
-Credit:AddButton("Copy Discord Invite", function()
-    setclipboard("https://discord.gg/JFFp2Y9BEV")
-end)
 
 
 
