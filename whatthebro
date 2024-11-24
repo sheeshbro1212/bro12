@@ -114,7 +114,8 @@ function showMainGUI()
     local Killing = window:AddTab("Killing")
 	local Player = window:AddTab("Players")
 	local Stats = window:AddTab("Stats")
-    local sheesh = window:AddTab("Credit")
+	local Main2 = window:AddTab("Teleports")
+    local Main3 = window:AddTab("Credit")
 
 
 
@@ -2439,10 +2440,8 @@ end)
 
 -- Teleporting tab 
 
-local features = window:AddTab("Islands") -- Name of tab
 
-
-features:AddButton("BeachTP", function()
+Main2:AddButton("BeachTP", function()
     local player = game.Players.LocalPlayer
     local character = player.Character
     local targetPosition = Vector3.new(-13, 5, 134)
@@ -2452,7 +2451,7 @@ features:AddButton("BeachTP", function()
     end
 end)
 
-features:AddButton("LegendsTP", function()
+Main2:AddButton("LegendsTP", function()
     local player = game.Players.LocalPlayer
     local character = player.Character
     local targetPosition = Vector3.new(4609, 989, -3903)
@@ -2462,7 +2461,7 @@ features:AddButton("LegendsTP", function()
     end
 end)
 
-features:AddButton("MythicalTP", function()
+Main2:AddButton("MythicalTP", function()
     local player = game.Players.LocalPlayer
     local character = player.Character
     local targetPosition = Vector3.new(2250, 5.2, 1073)
@@ -2472,7 +2471,7 @@ features:AddButton("MythicalTP", function()
     end
 end)
 
-features:AddButton("FrostTP", function()
+Main2:AddButton("FrostTP", function()
     local player = game.Players.LocalPlayer
     local character = player.Character
     local targetPosition = Vector3.new(-2623, 5, -409)
@@ -2482,7 +2481,7 @@ features:AddButton("FrostTP", function()
     end
 end)
 
-features:AddButton("InfernoTP", function()
+Main2:AddButton("InfernoTP", function()
     local player = game.Players.LocalPlayer
     local character = player.Character
     local targetPosition = Vector3.new(-6758, 5, -1284)
@@ -2492,7 +2491,7 @@ features:AddButton("InfernoTP", function()
     end
 end)
 
-features:AddButton("KingTP", function()
+Main2:AddButton("KingTP", function()
     local player = game.Players.LocalPlayer
     local character = player.Character
     local targetPosition = Vector3.new(-8625, 15, -5730)
@@ -2502,7 +2501,7 @@ features:AddButton("KingTP", function()
     end
 end)
 
-features:AddButton("TinyTP", function()
+Main2:AddButton("TinyTP", function()
     local player = game.Players.LocalPlayer
     local character = player.Character
     local targetPosition = Vector3.new(-32, 5, 1897)
@@ -2512,7 +2511,7 @@ features:AddButton("TinyTP", function()
     end
 end)
 
-features:AddButton("SecretTP", function()
+Main2:AddButton("SecretTP", function()
     local player = game.Players.LocalPlayer
     local character = player.Character
     local targetPosition = Vector3.new(1954, -0.2, 6182)
@@ -2522,7 +2521,7 @@ features:AddButton("SecretTP", function()
     end
 end)
 
-features:AddButton("Desert Brawl TP", function()
+Main2:AddButton("Desert Brawl TP", function()
     local player = game.Players.LocalPlayer
     local character = player.Character
     local targetPosition = Vector3.new(908, 103, -7016) -- Desert Brawl coordinates
@@ -2532,7 +2531,7 @@ features:AddButton("Desert Brawl TP", function()
     end
 end)
 
-features:AddButton("Beach Brawl TP", function()
+Main2:AddButton("Beach Brawl TP", function()
     local player = game.Players.LocalPlayer
     local character = player.Character
     local targetPosition = Vector3.new(-1812, 103, -5914) -- Beach Brawl coordinates
@@ -2542,7 +2541,7 @@ features:AddButton("Beach Brawl TP", function()
     end
 end)
 
-features:AddButton("Magma Brawl TP", function()
+Main2:AddButton("Magma Brawl TP", function()
     local player = game.Players.LocalPlayer
     local character = player.Character
     local targetPosition = Vector3.new(4517, 103, -8420) -- Magma Brawl coordinates
@@ -2552,7 +2551,7 @@ features:AddButton("Magma Brawl TP", function()
     end
 end)
 
-features:AddButton("Fortune Wheel TP", function()
+Main2:AddButton("Fortune Wheel TP", function()
     local player = game.Players.LocalPlayer
     local character = player.Character
     local targetPosition = Vector3.new(-2611, 3, 5768) -- Fortune Wheel coordinates
@@ -2563,27 +2562,30 @@ features:AddButton("Fortune Wheel TP", function()
 end)
 
 
+-- Credits Section
+Main3:AddLabel("Script Made by : Ben1x1x1x1x (Ben/Beamed)")
+Main3:AddLabel("Beamed V2 (Free Version)")
 
+Main3:AddLabel("---Close Friends---")
 
-sheesh:AddLabel("Script Made by : Ben1x1x1x1x (Ben/Beamed)")
-sheesh:AddLabel("Beamed V2 (Free Version)")
+Main3:AddLabel("Yupman")
+Main3:AddLabel("Jay")
+Main3:AddLabel("Ruth")
+Main3:AddLabel("LuckyIIIV -- Gay Best Friend LMAO")
+Main3:AddLabel("Sul")
 
-sheesh:AddLabel("---Close Friends---")
+Main3:AddLabel("----------")
 
-sheesh:AddLabel("Yupman")
-sheesh:AddLabel("Jay")
-sheesh:AddLabel("Ruth")
-sheesh:AddLabel("LuckyIIIV -- Gay Best Friend LMAO")
-sheesh:AddLabel("Sul")
+Main3:AddLabel("Gayming Broski!!")
 
-sheesh:AddLabel("----------")
+Main3:AddLabel("----------")
 
-sheesh:AddLabel("Gayming Broski!!")
-
-sheesh:AddLabel("----------")
-
-sheesh:AddButton("Copy Discord Invite", function()
+Main3:AddButton("Copy Discord Invite", function()
     setclipboard("https://discord.gg/JFFp2Y9BEV")
 end)
+
+
+
+
 
 end
