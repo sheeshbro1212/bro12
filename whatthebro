@@ -114,8 +114,8 @@ function showMainGUI()
     local Killing = window:AddTab("Killing")
 	local Player = window:AddTab("Players")
 	local Stats = window:AddTab("Stats")
-	local Teleport = Window:AddTab("Teleport")
-	local Credit = Window:AddTab("Credit")
+	local Teleport = window:AddTab("Teleport")
+	local Credit = window:AddTab("Credit")
 
 
 
@@ -2587,6 +2587,4 @@ end)
 
 
 
-
 end
-
