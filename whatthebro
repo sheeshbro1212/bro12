@@ -202,7 +202,7 @@ Main:AddLabel("----Farming----")
 
 -- folder again XD
 
-local folder = features:AddFolder("Auto Brawl")
+local folder = Main:AddFolder("Auto Brawl")
 
 folder:AddSwitch("Auto Join Brawl (God mode)", function(bool)
     if bool then
