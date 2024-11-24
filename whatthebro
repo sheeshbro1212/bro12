@@ -105,17 +105,17 @@ function showMainGUI()
     local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/sheeshbro1212/bro12/refs/heads/main/ererererer", true))()
     local window = library:AddWindow("Beamed v2 (Free version)", {
         main_color = Color3.fromRGB(50, 50, 50),
-        min_size = Vector2.new(400, 420),
+        min_size = Vector2.new(400, 425),
         can_resize = false,
     })
 
     local Main = window:AddTab("Main")
     local Farm = window:AddTab("Farm++")
     local Killing = window:AddTab("Killing")
-    local Teleport = window:AddTab("Islands")
-	local Players = window:AddTab("Players")
+    local Islands = window:AddTab("Islands")
+	local Player = window:AddTab("Players")
 	local Stats = window:AddTab("Stats")
-    local Credits = window:AddTab("Credits")
+    local Credit = window:AddTab("Credits")
 
 
 
@@ -931,10 +931,6 @@ end)
 
 toggleAllFunctions:Set(false) -- Set initial state to off
 
-folder:AddLabel("---- How to use ----")
-folder:AddLabel("U need Glitchable Rebirths for muscle king and Legends Gym Rock")
-folder:AddLabel("Equip Any Pet Unique pet and turn on the toggle.")
-folder:AddLabel("--------------------")
 
 folder:AddButton("walk on water",function()
 	local platformSize = Vector3.new(2048, 0, 2048)
@@ -2167,7 +2163,7 @@ local function setWalkSpeed(speed)
     game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = speed
 end
 
-Players:AddTextBox("WalkSpeed", function(text)
+Player:AddTextBox("WalkSpeed", function(text)
     local speed = tonumber(text)
     if speed then
         setWalkSpeed(speed)
@@ -2178,7 +2174,7 @@ local function setJumpPower(power)
     game.Players.LocalPlayer.Character.Humanoid.JumpPower = power
 end
 
-Players:AddTextBox("JumpPower", function(text)
+Player:AddTextBox("JumpPower", function(text)
     local power = tonumber(text)
     if power then
         setJumpPower(power)
@@ -2189,7 +2185,7 @@ local function setHipHeight(height)
     game.Players.LocalPlayer.Character.Humanoid.HipHeight = height
 end
 
-Players:AddTextBox("HipHeight", function(text)
+Player:AddTextBox("HipHeight", function(text)
     local height = tonumber(text)
     if height then
         setHipHeight(height)
@@ -2204,7 +2200,7 @@ local function limitCameraZoom(maxZoomDistance)
 end
 
 -- Add a text box for specifying the max zoom distance
-Players:AddTextBox("Max Zoom Distance", function(text)
+Player:AddTextBox("Max Zoom Distance", function(text)
     local maxZoomDistance = tonumber(text)
     if maxZoomDistance then
         limitCameraZoom(maxZoomDistance)
@@ -2219,9 +2215,9 @@ limitCameraZoom(DEFAULT_ZOOM_DISTANCE) -- Set the initial zoom distance
 
 
 -- other players tab LMAO
-Players:AddLabel("-------------")
+Player:AddLabel("-------------")
 
-local switch = Players:AddSwitch("Lock Client Position", function(bool)
+local switch = Player:AddSwitch("Lock Client Position", function(bool)
     function freezePlayer()
         local player = game.Players.LocalPlayer
         local character = player.Character or player.CharacterAdded:Wait()
@@ -2274,11 +2270,11 @@ local switch = Players:AddSwitch("Lock Client Position", function(bool)
     end
 end)
 
-Players:AddButton("Remove Punch Animation",function()
+Player:AddButton("Remove Punch Animation",function()
 	game:GetService("Players").LocalPlayer.Backpack.Punch.RequiresHandle = true
 end)
 
-Players:AddButton("Recover Punch Animation",function()
+Player:AddButton("Recover Punch Animation",function()
 	game:GetService("Players").LocalPlayer.Backpack.Punch.RequiresHandle = false
 end)
 
@@ -2296,7 +2292,7 @@ game:GetService("UserInputService").JumpRequest:connect(function()
 end)
 
 -- Create the switch and define its functionality
-local switch = Players:AddSwitch("Infinite Jump", function(bool)
+local switch = Player:AddSwitch("Infinite Jump", function(bool)
     InfiniteJumpEnabled = bool -- Update the InfiniteJumpEnabled variable based on the switch state
 end)
 
@@ -2332,7 +2328,7 @@ local function clip()
 end
 
 -- Create the switch for toggling noclip
-local switch = Players:AddSwitch("Noclip", function(bool)
+local switch = Player:AddSwitch("Noclip", function(bool)
     if bool then
         noclip()
     else
@@ -2345,11 +2341,11 @@ switch:Set(false) -- Noclip disabled by default
 
 
 
-Players:AddButton("Anti Afk", function(Value)
+Player:AddButton("Anti Afk", function(Value)
     loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-AntiAFK-script-18076"))()
 end)
 
-Players:AddButton("ChatSpy", function()
+Player:AddButton("ChatSpy", function()
     --This script reveals ALL hidden messages in the default chat
 
 enabled = true --chat "/spy" to toggle!
@@ -2440,65 +2436,66 @@ Players:AddButton("Fps Boost", function()
 end)
 
 -- Teleporting tab 
-Teleport:AddButton("Tiny Island", function()
+Islands:AddButton("Tiny Island", function()
     game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-36.00175476074219, 6.980721950531006, 1890.6890869140625)
      end)
 
-Teleport:AddButton("Frost Gym", function()
+Islands:AddButton("Frost Gym", function()
     game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-2623.022216796875, 6.82747745513916, -409.0733337402344)
      end)
 
-Teleport:AddButton("Mystical Gym", function()
+Islands:AddButton("Mystical Gym", function()
     game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(2250.778076171875, 6.827476978302002, 1073.2266845703125)
       end)
 
-Teleport:AddButton("Eternal Gym", function()
+Islands:AddButton("Eternal Gym", function()
     game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-6758.9638671875, 6.827489852905273, -1284.918701171875)
       end)
 
-Teleport:AddButton("Legend Gym", function()
+Islands:AddButton("Legend Gym", function()
     game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(4603.28173828125, 990.9803466796875, -3897.86572265625)
       end)
 
-Teleport:AddButton("Muscle King", function()
+Islands:AddButton("Muscle King", function()
     game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-8625.931640625, 16.677501678466797, -5730.47314453125)
       end)
 
-Teleport:AddButton("Beach Brawl", function()
+Islands:AddButton("Beach Brawl", function()
     game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-1840.796630859375, 61.801429748535156, -6290.59375)
      end)
 
-Teleport:AddButton("Hell Brawl", function()
+Islands:AddButton("Hell Brawl", function()
     game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(4416.93603515625, 61.40142822265625, -8734.6572265625)
      end)
 
-Teleport:AddButton("Desert Brawl", function()
+Islands:AddButton("Desert Brawl", function()
     game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(990.7547607421875, 61.801429748535156, -7314.16748046875)
      end)
 
-Teleport:AddButton("Island Without Spin", function()
+Islands:AddButton("Island Without Spin", function()
     game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(1954.031494140625, -0.2819780111312866, 6184.93310546875)
       end)
 
-Teleport:AddButton("Island With Spin", function()
+Islands:AddButton("Island With Spin", function()
     game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-2605.2099609375, -0.7466869354248047, 5733.95654296875)
       end)
 
 -- credits tab 
-	  Credits:AddLabel("Script Made by : Ben1x1x1x1x (Ben/Beamed)")
-	  Credits:AddLabel("Beamed V2 (Free Version)")
+	  Credit:AddLabel("Script Made by : Ben1x1x1x1x (Ben/Beamed)")
+	  Credit:AddLabel("Beamed V2 (Free Version)")
 	  
-	  Credits:AddLabel("---Close Friends---")
+	  Credit:AddLabel("---Close Friends---")
 	  
-	  Credits:AddLabel("Yupman")
-	  Credits:AddLabel("Jay")
-	  Credits:AddLabel("Ruth")
-	  Credits:AddLabel("LuckyIIIV -- Gay Best Friend LMAO")
-	  Credits:AddLabel("Sul")
+	  Credit:AddLabel("Yupman")
+	  Credit:AddLabel("Jay")
+	  Credit:AddLabel("Ruth")
+	  Credit:AddLabel("LuckyIIIV -- Gay Best Friend LMAO")
+	  Credit:AddLabel("Sul")
 	  
-	  Credits:AddLabel("----------")
+	  Credit:AddLabel("----------")
 	  
-	  Credits:AddLabel("Gayming Broski!!")
+	  Credit:AddLabel("Gayming Broski!!")
 	  
-	  Credits:AddLabel("----------")
+	  Credit:AddLabel("----------")
 end
+
