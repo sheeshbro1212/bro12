@@ -8,9 +8,9 @@ local window = library:AddWindow("Beamed V2", {
 local Main = window:AddTab("Main")
 local Farm = window:AddTab("Farm++")
 local Killing = window:AddTab("Killing")
+local KillV2 = window:AddTab("KillV2")
 local Stats = window:AddTab("Stats")
 local Player = window:AddTab("Players")
-local KillV2 = window:AddTab("KillV2")
 
 
 
