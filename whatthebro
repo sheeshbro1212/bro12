@@ -1,4 +1,3 @@
-
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/sheeshbro1212/bro12/refs/heads/main/ererererer", true))()
 local window = library:AddWindow("Beamed V2", {
 	main_color = Color3.fromRGB(96, 96, 96), -- Color
@@ -1266,6 +1265,475 @@ createAutoEquipSwitch("Auto Situps", "Situps")
 folder:AddLabel("----Reset to be able to walk again----")
 
 
+
+-- killing tab sheeshbro1212
+
+
+local switch = Killing:AddSwitch("Auto Equip Punch", function(v)
+    local Players = game:GetService("Players")
+
+    local function OnTouched(hit)
+        local humanoid = hit.Parent:FindFirstChildOfClass("Humanoid")
+        if humanoid then
+            humanoid:TakeDamage(10) -- Change the damage value as needed
+        end
+    end
+
+    local function EquipPunch(player)
+        local punchTool = player.Backpack:FindFirstChild("Punch")
+        if punchTool and punchTool:IsA("Tool") then
+            if not player.Character:FindFirstChild("Punch") then
+                punchTool.Parent = player.Character
+            end
+        end
+    end
+
+    local function EquipPunchForAllPlayers()
+        for _, player in ipairs(Players:GetPlayers()) do
+            EquipPunch(player)
+        end
+    end
+
+    loopEquipPunch = function()
+        while true do
+            if getgenv().EquipPunch then
+                EquipPunchForAllPlayers()
+            else
+                break -- Break the loop if EquipPunch is false
+            end
+            wait(0,1) -- Adjust the wait time as needed
+        end
+    end
+
+    getgenv().EquipPunch = v
+
+    if v then
+        loopEquipPunch() -- Start the loop to continuously equip the "Punch" tool
+    elseif loopEquipPunch then
+        loopEquipPunch = nil -- Stop the loop when switch is deactivated
+    end
+end)
+
+spawn(function()
+
+end)
+
+
+local switch = Killing:AddSwitch("Auto Punch", function(bool)
+    if bool then
+        _G.autopunch = true
+        repeat
+            game.Players.LocalPlayer.Character.Humanoid:EquipTool(game.Players.LocalPlayer.Backpack:FindFirstChild("Punch"))
+            local args = {
+                [1] = "punch",
+                [2] = "rightHand"
+            }
+            game:GetService("Players").LocalPlayer.muscleEvent:FireServer(unpack(args))
+
+            local args = {
+                [1] = "punch",
+                [2] = "leftHand"
+            }
+            game:GetService("Players").LocalPlayer.muscleEvent:FireServer(unpack(args))
+            game:GetService("RunService").RenderStepped:Wait()
+        until not _G.autopunch
+    else
+        _G.autopunch = false
+    end
+end)
+
+
+local function autoPunchWithMovement()
+    while _G.autopunchwm do
+        game.Players.LocalPlayer.Character.Humanoid:EquipTool(game.Players.LocalPlayer.Backpack:FindFirstChild("Punch"))
+        local args = {
+            [1] = "punch",
+            [2] = "rightHand"
+        }
+        game:GetService("Players").LocalPlayer.muscleEvent:FireServer(unpack(args))
+
+        local args = {
+            [1] = "punch",
+            [2] = "leftHand"
+        }
+        game:GetService("Players").LocalPlayer.muscleEvent:FireServer(unpack(args))
+        game:GetService("RunService").RenderStepped:Wait()
+    end
+end
+
+local function playAnimations()
+    local character = game.Players.LocalPlayer.Character
+    local humanoid = character:WaitForChild("Humanoid")
+
+    local animationIds = {
+        "rbxassetid://3638767427",
+        "rbxassetid://3638749874"
+    }
+
+    local currentIndex = 1
+
+    while _G.autopunchwm do
+        local animation = Instance.new("Animation")
+        animation.AnimationId = animationIds[currentIndex]
+
+        local animationTrack = humanoid:LoadAnimation(animation)
+        animationTrack:Play()
+
+        currentIndex = currentIndex % #animationIds + 1
+
+        wait(0.4)
+    end
+end
+
+local switch = Killing:AddSwitch("Auto Punch {With Movement}", function(bool)
+    if bool then
+        _G.autopunchwm = true
+        spawn(autoPunchWithMovement)
+        spawn(playAnimations)
+    else
+        _G.autopunchwm = false
+    end
+end)
+
+
+Killing:AddButton("Speed Punch",function()
+	game:GetService("Players").LocalPlayer.Backpack.Punch:FindFirstChildOfClass("NumberValue").Value = 0.05
+end)
+
+
+local function autoPunchWithMovement()
+    while _G.autopunchwm do
+        game.Players.LocalPlayer.Character.Humanoid:EquipTool(game.Players.LocalPlayer.Backpack:FindFirstChild("Punch"))
+        local args = {
+            [1] = "punch",
+            [2] = "rightHand"
+        }
+        game:GetService("Players").LocalPlayer.muscleEvent:FireServer(unpack(args))
+
+        local args = {
+            [1] = "punch",
+            [2] = "leftHand"
+        }
+        game:GetService("Players").LocalPlayer.muscleEvent:FireServer(unpack(args))
+        game:GetService("RunService").RenderStepped:Wait()
+    end
+end
+
+local function playAnimations()
+    local character = game.Players.LocalPlayer.Character
+    local humanoid = character:WaitForChild("Humanoid")
+
+    local animationIds = {
+        "rbxassetid://3638767427",
+        "rbxassetid://3638749874"
+    }
+
+    local currentIndex = 1
+
+    while _G.autopunchwm do
+        local animation = Instance.new("Animation")
+        animation.AnimationId = animationIds[currentIndex]
+
+        local animationTrack = humanoid:LoadAnimation(animation)
+        animationTrack:Play()
+
+        currentIndex = currentIndex % #animationIds + 1
+
+        wait(0.001)
+    end
+end
+
+local switch = Killing:AddSwitch("Auto fast Punch", function(bool)
+    if bool then
+        _G.autopunchwm = true
+        spawn(autoPunchWithMovement)
+        spawn(playAnimations)
+    else
+        _G.autopunchwm = false
+    end
+end)
+-- for aura 
+
+
+-- Function to check if a player is in the whitelist
+local function isInWhitelist(player, whitelist)
+    for _, name in ipairs(whitelist) do
+        if player.Name == name then
+            return true
+        end
+    end
+    return false
+end
+
+local whitelist = {}
+
+local function addPlayerToWhitelist(playerName)
+    if not table.find(whitelist, playerName) then
+        table.insert(whitelist, playerName)
+        print(playerName .. " has been added to the whitelist.")
+    else
+        print(playerName .. " is already in the whitelist.")
+    end
+end
+
+local dropdown = Killing:AddDropdown("Add to Whitelist", function(selectedPlayer)
+    addPlayerToWhitelist(selectedPlayer)
+end)
+
+for _, player in pairs(game.Players:GetPlayers()) do
+    dropdown:Add(player.Name)
+end
+
+game.Players.PlayerAdded:Connect(function(player)
+    dropdown:Add(player.Name)
+end)
+
+game.Players.PlayerRemoving:Connect(function(player)
+    for i, name in ipairs(whitelist) do
+        if name == player.Name then
+            table.remove(whitelist, i)
+            print(player.Name .. " has been removed from the whitelist.")
+        end
+    end
+    dropdown:Remove(player.Name)
+end)
+
+
+-- TextBox to remove users from the whitelist
+Killing:AddTextBox("Remove from Whitelist", function(text)
+    for i, name in ipairs(whitelist) do
+        if name == text then
+            table.remove(whitelist, i)
+            break
+        end
+    end
+end)
+
+-- Button to clear the whitelist
+Killing:AddButton("Clear Whitelist", function()
+    whitelist = {}
+end)
+
+local function touchHead(player)
+    local character = player.Character
+    if character and not isInWhitelist(player, whitelist) then
+        local head = character:FindFirstChild("Head")
+        local localPlayer = game.Players.LocalPlayer
+        local leftHand = localPlayer and localPlayer.Character:FindFirstChild("LeftHand")
+        if head and leftHand then
+            pcall(function()
+                firetouchinterest(head, leftHand, 0)
+                wait(0.01)
+                firetouchinterest(head, leftHand, 1)
+            end)
+        end
+    end
+end
+
+local switch = Killing:AddSwitch("Auto Kill", function(bool)
+    if bool then
+        _G.autokill = true
+        repeat
+            local Players = game:GetService("Players")
+            local isRunning = false
+
+            local function main()
+                while isRunning and _G.autokill do
+                    for _, player in ipairs(Players:GetPlayers()) do
+                        if player ~= Players.LocalPlayer then
+                            touchHead(player)
+                        end
+                    end
+                    wait(1 * 0.1)
+                end
+            end
+
+            local function startCode()
+                isRunning = true
+                main()
+            end
+
+            startCode()
+        until not _G.autokill
+    else
+        _G.autokill = false
+    end
+end)
+
+local selectedPlayers = {}
+local RunService = game:GetService("RunService")
+local Players = game:GetService("Players")
+local isRunning = false
+local stepConnection
+local dropdown = nil
+
+local function updateDropdown(player)
+    if dropdown then
+        dropdown:Add(player.Name)
+    end
+end
+
+local function removeDropdown(player)
+    if dropdown then
+        dropdown:Remove(player.Name)
+    end
+end
+
+local function touchTargetHead(player)
+    if player and player.Character then
+        local targetHead = player.Character:FindFirstChild("Head")
+        local localLeftHand = Players.LocalPlayer.Character and Players.LocalPlayer.Character:FindFirstChild("LeftHand")
+        local localRightHand = Players.LocalPlayer.Character and Players.LocalPlayer.Character:FindFirstChild("RightHand")
+
+        if targetHead and localLeftHand and localRightHand then
+            firetouchinterest(targetHead, localLeftHand, 0)
+            firetouchinterest(targetHead, localLeftHand, 1)
+            firetouchinterest(targetHead, localRightHand, 0)
+            firetouchinterest(targetHead, localRightHand, 1)
+        end
+    end
+end
+
+local function main()
+    for _, player in ipairs(selectedPlayers) do
+        touchTargetHead(player)
+    end
+end
+
+local function startCode()
+    isRunning = true
+    stepConnection = RunService.Stepped:Connect(main)
+end
+
+local function stopCode()
+    isRunning = false
+    if stepConnection then
+        stepConnection:Disconnect()
+    end
+    selectedPlayers = {}
+    if dropdown then
+        dropdown:ClearSelection()
+    end
+end
+
+local switch = Killing:AddSwitch("Auto Kill Players", function(bool)
+    if bool then
+        startCode()
+    else
+        stopCode()
+    end
+end)
+
+-- Modify the Players.PlayerAdded event handler
+Players.PlayerAdded:Connect(function(player)
+    updateDropdown(player)
+    dropdown:ClearOptions()
+    for _, p in ipairs(Players:GetPlayers()) do
+        dropdown:AddOption(p.Name)
+    end
+end)
+
+-- Modify the Players.PlayerRemoving event handler
+Players.PlayerRemoving:Connect(function(player)
+    removeDropdown(player)
+end)
+
+-- Modify the initialization of the dropdown
+dropdown = Killing:AddDropdown("Players", function(playerName)
+    local player = Players:FindFirstChild(playerName)
+    if player then
+        table.insert(selectedPlayers, player)
+    end
+end)
+
+-- After initializing the dropdown, populate it with existing players
+for _, player in ipairs(Players:GetPlayers()) do
+    updateDropdown(player)
+end
+
+
+
+
+
+-- Text box for specifying a player to auto-kill
+Killing:AddTextBox("Auto Kill Player", function(playerName)
+    local player = Players:FindFirstChild(playerName)
+    if player then
+        table.insert(selectedPlayers, player)
+    end
+end)
+
+-- View Player Functionality
+local currentPlayerConnection = nil
+local currentPlayer = nil
+
+local function viewPlayer(playerName)
+    -- Search for players whose names contain the input text
+    local player = nil
+    for _, p in ipairs(game.Players:GetPlayers()) do
+        if p.Name:lower():match(playerName:lower()) then
+            player = p
+            break
+        end
+    end
+
+    if player then
+        -- Function to set the camera to the player's character
+        local function setCameraToCharacter(character)
+            game.Workspace.CurrentCamera.CameraSubject = character
+        end
+
+        -- Set the camera to the player's current character
+        setCameraToCharacter(player.Character or player.CharacterAdded:Wait())
+
+        -- Disconnect any previous connections
+        if currentPlayerConnection then
+            currentPlayerConnection:Disconnect()
+            currentPlayerConnection = nil
+        end
+
+        -- Connect the CharacterAdded event to keep viewing the player after respawn
+        currentPlayerConnection = player.CharacterAdded:Connect(setCameraToCharacter)
+        currentPlayer = player
+    else
+        warn("Player not found:", playerName)
+    end
+end
+
+-- Create a text box for specifying the player to view
+Killing:AddTextBox("View Player", function(playerName)
+    viewPlayer(playerName)
+end)
+
+-- Create a button to unview the player
+Killing:AddButton("Unview Player", function()
+    -- Disconnect the current player connection if it exists
+    if currentPlayerConnection then
+        currentPlayerConnection:Disconnect()
+        currentPlayerConnection = nil
+    end
+
+    -- Reset the camera to the local player
+    local localPlayer = game.Players.LocalPlayer
+    game.Workspace.CurrentCamera.CameraSubject = localPlayer.Character or localPlayer.CharacterAdded:Wait()
+    currentPlayer = nil
+end)
+
+-- code for teleport LMAO
+
+local players = game:GetService("Players")
+
+-- Function to find a player by partial name
+local function findPlayerByName(partialName)
+    partialName = partialName:lower()
+    for _, player in ipairs(players:GetPlayers()) do
+        if player.Name:lower():find(partialName) then
+            return player
+        end
+    end
+    return nil
+end
+
 -- stats for showwing randoms 
 
 Stats:AddLabel("------------------------")
@@ -1825,473 +2293,7 @@ Players:AddButton("Fps Boost", function()
     workspace.DescendantAdded:Connect(GetReduce)
 end)
 
--- killing tab sheeshbro1212
 
-
-local switch = Killing:AddSwitch("Auto Equip Punch", function(v)
-    local Players = game:GetService("Players")
-
-    local function OnTouched(hit)
-        local humanoid = hit.Parent:FindFirstChildOfClass("Humanoid")
-        if humanoid then
-            humanoid:TakeDamage(10) -- Change the damage value as needed
-        end
-    end
-
-    local function EquipPunch(player)
-        local punchTool = player.Backpack:FindFirstChild("Punch")
-        if punchTool and punchTool:IsA("Tool") then
-            if not player.Character:FindFirstChild("Punch") then
-                punchTool.Parent = player.Character
-            end
-        end
-    end
-
-    local function EquipPunchForAllPlayers()
-        for _, player in ipairs(Players:GetPlayers()) do
-            EquipPunch(player)
-        end
-    end
-
-    loopEquipPunch = function()
-        while true do
-            if getgenv().EquipPunch then
-                EquipPunchForAllPlayers()
-            else
-                break -- Break the loop if EquipPunch is false
-            end
-            wait(0,1) -- Adjust the wait time as needed
-        end
-    end
-
-    getgenv().EquipPunch = v
-
-    if v then
-        loopEquipPunch() -- Start the loop to continuously equip the "Punch" tool
-    elseif loopEquipPunch then
-        loopEquipPunch = nil -- Stop the loop when switch is deactivated
-    end
-end)
-
-spawn(function()
-
-end)
-
-
-local switch = Killing:AddSwitch("Auto Punch", function(bool)
-    if bool then
-        _G.autopunch = true
-        repeat
-            game.Players.LocalPlayer.Character.Humanoid:EquipTool(game.Players.LocalPlayer.Backpack:FindFirstChild("Punch"))
-            local args = {
-                [1] = "punch",
-                [2] = "rightHand"
-            }
-            game:GetService("Players").LocalPlayer.muscleEvent:FireServer(unpack(args))
-
-            local args = {
-                [1] = "punch",
-                [2] = "leftHand"
-            }
-            game:GetService("Players").LocalPlayer.muscleEvent:FireServer(unpack(args))
-            game:GetService("RunService").RenderStepped:Wait()
-        until not _G.autopunch
-    else
-        _G.autopunch = false
-    end
-end)
-
-
-local function autoPunchWithMovement()
-    while _G.autopunchwm do
-        game.Players.LocalPlayer.Character.Humanoid:EquipTool(game.Players.LocalPlayer.Backpack:FindFirstChild("Punch"))
-        local args = {
-            [1] = "punch",
-            [2] = "rightHand"
-        }
-        game:GetService("Players").LocalPlayer.muscleEvent:FireServer(unpack(args))
-
-        local args = {
-            [1] = "punch",
-            [2] = "leftHand"
-        }
-        game:GetService("Players").LocalPlayer.muscleEvent:FireServer(unpack(args))
-        game:GetService("RunService").RenderStepped:Wait()
-    end
-end
-
-local function playAnimations()
-    local character = game.Players.LocalPlayer.Character
-    local humanoid = character:WaitForChild("Humanoid")
-
-    local animationIds = {
-        "rbxassetid://3638767427",
-        "rbxassetid://3638749874"
-    }
-
-    local currentIndex = 1
-
-    while _G.autopunchwm do
-        local animation = Instance.new("Animation")
-        animation.AnimationId = animationIds[currentIndex]
-
-        local animationTrack = humanoid:LoadAnimation(animation)
-        animationTrack:Play()
-
-        currentIndex = currentIndex % #animationIds + 1
-
-        wait(0.4)
-    end
-end
-
-local switch = Killing:AddSwitch("Auto Punch {With Movement}", function(bool)
-    if bool then
-        _G.autopunchwm = true
-        spawn(autoPunchWithMovement)
-        spawn(playAnimations)
-    else
-        _G.autopunchwm = false
-    end
-end)
-
-
-Killing:AddButton("Speed Punch",function()
-	game:GetService("Players").LocalPlayer.Backpack.Punch:FindFirstChildOfClass("NumberValue").Value = 0.05
-end)
-
-
-local function autoPunchWithMovement()
-    while _G.autopunchwm do
-        game.Players.LocalPlayer.Character.Humanoid:EquipTool(game.Players.LocalPlayer.Backpack:FindFirstChild("Punch"))
-        local args = {
-            [1] = "punch",
-            [2] = "rightHand"
-        }
-        game:GetService("Players").LocalPlayer.muscleEvent:FireServer(unpack(args))
-
-        local args = {
-            [1] = "punch",
-            [2] = "leftHand"
-        }
-        game:GetService("Players").LocalPlayer.muscleEvent:FireServer(unpack(args))
-        game:GetService("RunService").RenderStepped:Wait()
-    end
-end
-
-local function playAnimations()
-    local character = game.Players.LocalPlayer.Character
-    local humanoid = character:WaitForChild("Humanoid")
-
-    local animationIds = {
-        "rbxassetid://3638767427",
-        "rbxassetid://3638749874"
-    }
-
-    local currentIndex = 1
-
-    while _G.autopunchwm do
-        local animation = Instance.new("Animation")
-        animation.AnimationId = animationIds[currentIndex]
-
-        local animationTrack = humanoid:LoadAnimation(animation)
-        animationTrack:Play()
-
-        currentIndex = currentIndex % #animationIds + 1
-
-        wait(0.001)
-    end
-end
-
-local switch = Killing:AddSwitch("Auto fast Punch", function(bool)
-    if bool then
-        _G.autopunchwm = true
-        spawn(autoPunchWithMovement)
-        spawn(playAnimations)
-    else
-        _G.autopunchwm = false
-    end
-end)
--- for aura 
-
-
--- Function to check if a player is in the whitelist
-local function isInWhitelist(player, whitelist)
-    for _, name in ipairs(whitelist) do
-        if player.Name == name then
-            return true
-        end
-    end
-    return false
-end
-
-local whitelist = {}
-
-local function addPlayerToWhitelist(playerName)
-    if not table.find(whitelist, playerName) then
-        table.insert(whitelist, playerName)
-        print(playerName .. " has been added to the whitelist.")
-    else
-        print(playerName .. " is already in the whitelist.")
-    end
-end
-
-local dropdown = Killing:AddDropdown("Add to Whitelist", function(selectedPlayer)
-    addPlayerToWhitelist(selectedPlayer)
-end)
-
-for _, player in pairs(game.Players:GetPlayers()) do
-    dropdown:Add(player.Name)
-end
-
-game.Players.PlayerAdded:Connect(function(player)
-    dropdown:Add(player.Name)
-end)
-
-game.Players.PlayerRemoving:Connect(function(player)
-    for i, name in ipairs(whitelist) do
-        if name == player.Name then
-            table.remove(whitelist, i)
-            print(player.Name .. " has been removed from the whitelist.")
-        end
-    end
-    dropdown:Remove(player.Name)
-end)
-
-
--- TextBox to remove users from the whitelist
-Killing:AddTextBox("Remove from Whitelist", function(text)
-    for i, name in ipairs(whitelist) do
-        if name == text then
-            table.remove(whitelist, i)
-            break
-        end
-    end
-end)
-
--- Button to clear the whitelist
-Killing:AddButton("Clear Whitelist", function()
-    whitelist = {}
-end)
-
-local function touchHead(player)
-    local character = player.Character
-    if character and not isInWhitelist(player, whitelist) then
-        local head = character:FindFirstChild("Head")
-        local localPlayer = game.Players.LocalPlayer
-        local leftHand = localPlayer and localPlayer.Character:FindFirstChild("LeftHand")
-        if head and leftHand then
-            pcall(function()
-                firetouchinterest(head, leftHand, 0)
-                wait(0.01)
-                firetouchinterest(head, leftHand, 1)
-            end)
-        end
-    end
-end
-
-local switch = Killing:AddSwitch("Auto Kill", function(bool)
-    if bool then
-        _G.autokill = true
-        repeat
-            local Players = game:GetService("Players")
-            local isRunning = false
-
-            local function main()
-                while isRunning and _G.autokill do
-                    for _, player in ipairs(Players:GetPlayers()) do
-                        if player ~= Players.LocalPlayer then
-                            touchHead(player)
-                        end
-                    end
-                    wait(1 * 0.1)
-                end
-            end
-
-            local function startCode()
-                isRunning = true
-                main()
-            end
-
-            startCode()
-        until not _G.autokill
-    else
-        _G.autokill = false
-    end
-end)
-
-local selectedPlayers = {}
-local RunService = game:GetService("RunService")
-local Players = game:GetService("Players")
-local isRunning = false
-local stepConnection
-local dropdown = nil
-
-local function updateDropdown(player)
-    if dropdown then
-        dropdown:Add(player.Name)
-    end
-end
-
-local function removeDropdown(player)
-    if dropdown then
-        dropdown:Remove(player.Name)
-    end
-end
-
-local function touchTargetHead(player)
-    if player and player.Character then
-        local targetHead = player.Character:FindFirstChild("Head")
-        local localLeftHand = Players.LocalPlayer.Character and Players.LocalPlayer.Character:FindFirstChild("LeftHand")
-        local localRightHand = Players.LocalPlayer.Character and Players.LocalPlayer.Character:FindFirstChild("RightHand")
-
-        if targetHead and localLeftHand and localRightHand then
-            firetouchinterest(targetHead, localLeftHand, 0)
-            firetouchinterest(targetHead, localLeftHand, 1)
-            firetouchinterest(targetHead, localRightHand, 0)
-            firetouchinterest(targetHead, localRightHand, 1)
-        end
-    end
-end
-
-local function main()
-    for _, player in ipairs(selectedPlayers) do
-        touchTargetHead(player)
-    end
-end
-
-local function startCode()
-    isRunning = true
-    stepConnection = RunService.Stepped:Connect(main)
-end
-
-local function stopCode()
-    isRunning = false
-    if stepConnection then
-        stepConnection:Disconnect()
-    end
-    selectedPlayers = {}
-    if dropdown then
-        dropdown:ClearSelection()
-    end
-end
-
-local switch = Killing:AddSwitch("Auto Kill Players", function(bool)
-    if bool then
-        startCode()
-    else
-        stopCode()
-    end
-end)
-
--- Modify the Players.PlayerAdded event handler
-Players.PlayerAdded:Connect(function(player)
-    updateDropdown(player)
-    dropdown:ClearOptions()
-    for _, p in ipairs(Players:GetPlayers()) do
-        dropdown:AddOption(p.Name)
-    end
-end)
-
--- Modify the Players.PlayerRemoving event handler
-Players.PlayerRemoving:Connect(function(player)
-    removeDropdown(player)
-end)
-
--- Modify the initialization of the dropdown
-dropdown = Killing:AddDropdown("Players", function(playerName)
-    local player = Players:FindFirstChild(playerName)
-    if player then
-        table.insert(selectedPlayers, player)
-    end
-end)
-
--- After initializing the dropdown, populate it with existing players
-for _, player in ipairs(Players:GetPlayers()) do
-    updateDropdown(player)
-end
-
-
-
-
-
--- Text box for specifying a player to auto-kill
-Killing:AddTextBox("Auto Kill Player", function(playerName)
-    local player = Players:FindFirstChild(playerName)
-    if player then
-        table.insert(selectedPlayers, player)
-    end
-end)
-
--- View Player Functionality
-local currentPlayerConnection = nil
-local currentPlayer = nil
-
-local function viewPlayer(playerName)
-    -- Search for players whose names contain the input text
-    local player = nil
-    for _, p in ipairs(game.Players:GetPlayers()) do
-        if p.Name:lower():match(playerName:lower()) then
-            player = p
-            break
-        end
-    end
-
-    if player then
-        -- Function to set the camera to the player's character
-        local function setCameraToCharacter(character)
-            game.Workspace.CurrentCamera.CameraSubject = character
-        end
-
-        -- Set the camera to the player's current character
-        setCameraToCharacter(player.Character or player.CharacterAdded:Wait())
-
-        -- Disconnect any previous connections
-        if currentPlayerConnection then
-            currentPlayerConnection:Disconnect()
-            currentPlayerConnection = nil
-        end
-
-        -- Connect the CharacterAdded event to keep viewing the player after respawn
-        currentPlayerConnection = player.CharacterAdded:Connect(setCameraToCharacter)
-        currentPlayer = player
-    else
-        warn("Player not found:", playerName)
-    end
-end
-
--- Create a text box for specifying the player to view
-Killing:AddTextBox("View Player", function(playerName)
-    viewPlayer(playerName)
-end)
-
--- Create a button to unview the player
-Killing:AddButton("Unview Player", function()
-    -- Disconnect the current player connection if it exists
-    if currentPlayerConnection then
-        currentPlayerConnection:Disconnect()
-        currentPlayerConnection = nil
-    end
-
-    -- Reset the camera to the local player
-    local localPlayer = game.Players.LocalPlayer
-    game.Workspace.CurrentCamera.CameraSubject = localPlayer.Character or localPlayer.CharacterAdded:Wait()
-    currentPlayer = nil
-end)
-
--- code for teleport LMAO
-
-local players = game:GetService("Players")
-
--- Function to find a player by partial name
-local function findPlayerByName(partialName)
-    partialName = partialName:lower()
-    for _, player in ipairs(players:GetPlayers()) do
-        if player.Name:lower():find(partialName) then
-            return player
-        end
-    end
-    return nil
-end
 
 -- killv2 idk
 
