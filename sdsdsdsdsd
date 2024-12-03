@@ -112,7 +112,7 @@ function showMainGUI()
     local Main = window:AddTab("Main")
     local Farm = window:AddTab("Farm++")
     local Misc = window:Addtab("Misc")
-    local Pets = window:Addtab("Pets")
+    local Eggs = window:Addtab("Eggs")
     local Killing = window:AddTab("Killing")
 	local Player = window:AddTab("Players")
 	local Stats = window:AddTab("Stats")
@@ -1819,7 +1819,7 @@ local switch = folder:AddSwitch("Fast Handstands", function(bool)
 end)
 
 -- Add folder for more space
-local folder = Pets:AddFolder(" Auto Open Crystal")
+local folder = Eggs:AddFolder(" Auto Open Crystal")
 
 local switch = folder:AddSwitch("Auto Open Blue Crystal", function(bool)
     if bool then
@@ -1998,7 +1998,7 @@ else
 end)
 
 -- Add folder for more space
-local folder = Pets:AddFolder(" Auto Sell Pets")
+local folder = Eggs:AddFolder(" Auto Sell Pets")
 
 local switch = folder:AddSwitch("Auto Delete Basic Pet", function(bool)
     if bool then
@@ -2313,7 +2313,7 @@ game:GetService("ReplicatedStorage").rEvents.sellPetEvent:FireServer(unpack(args
 end)
 
 -- Add folder for more space
-local folder = Pets:AddFolder(" Auto Evolve Pets")
+local folder = Eggs:AddFolder(" Auto Evolve Pets")
 
 local switch = folder:AddSwitch("Auto Evolve Darkstar Hunter", function(bool)
     if bool then 
@@ -3390,4 +3390,3 @@ end)
 
 
 end
-
